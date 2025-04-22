@@ -1,8 +1,12 @@
 /// <reference types="vinxi/types/client" />
-import { hydrateRoot } from 'react-dom/client'
-import { StartClient } from '@tanstack/react-start'
-import { createRouter } from './router'
+import { globalCss } from '@mui/material-pigment-css';
+import { StartClient } from '@tanstack/react-start';
+import { hydrateRoot } from 'react-dom/client';
 
-const router = createRouter()
+import { createRouter } from '~/setup';
 
-hydrateRoot(document, <StartClient router={router} />)
+import '@mui/material-pigment-css/styles.css';
+
+const router = createRouter();
+
+hydrateRoot(document, <StartClient router={router} />);

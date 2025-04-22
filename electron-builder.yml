@@ -1,0 +1,14 @@
+appId: com.cllanillo.zonactiva
+productName: ZonActiva
+directories:
+  output: electron/dist
+files:
+  - dist/**/* # Web Build
+  - electron/main.js
+  - electron/preload.js
+mac:
+  target: dmg
+win:
+  target: nsis
+linux:
+  target: AppImage

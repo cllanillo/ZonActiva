@@ -1,16 +1,17 @@
-import { Stack, Typography } from '@mui/material'
-import { createFileRoute } from '@tanstack/react-router'
+import { Typography } from '@mui/material';
+import Stack from '@mui/material-pigment-css/Stack';
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
   return (
-    <Stack alignItems="center">
-      <Typography variant="h1" marginBlockEnd={4}>
+    <Stack>
+      <Typography variant="h2" marginBlockEnd={4}>
         Hello world!
       </Typography>
     </Stack>
-  )
+  );
 }

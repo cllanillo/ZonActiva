@@ -1,20 +1,20 @@
-import DefaultPropsProvider from "@mui/material/DefaultPropsProvider";
-import {
-  HeadContent,
-  Outlet,
-  Scripts,
-  createRootRoute,
-} from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { useState, type ReactNode } from "react";
+import RobotoVariable from '@fontsource-variable/roboto?url';
+import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import type { PropsWithChildren } from 'react';
 
-import RobotoVariable from "@fontsource-variable/roboto?url";
+import { Layout } from '~/components/Layout';
 
-import { Header } from "~/components/Header";
+import RootCss from '~/css/__root.css?url';
+import { Providers } from '~/setup';
 
 export const Route = createRootRoute({
   head: () => ({
-    links: [{ rel: "stylesheet", href: RobotoVariable }],
+    links: [
+      { rel: 'stylesheet', href: RootCss },
+      { rel: 'stylesheet', href: RobotoVariable },
+    ],
+    // meta: [],
   }),
   component: RootComponent,
 });
@@ -27,38 +27,15 @@ function RootComponent() {
   );
 }
 
-function Providers({ children }: { children: ReactNode }) {
-  return (
-    <DefaultPropsProvider value={{ MuiButton: { variant: "contained" } }}>
-      {/*  */}
-      {children}
-    </DefaultPropsProvider>
-  );
-}
-
-function RootDocument({ children }: { children: ReactNode }) {
+function RootDocument({ children }: PropsWithChildren) {
   return (
     <html>
       <head>
         <HeadContent />
       </head>
-      <body sx={{ height: "100dvh", display: "flex", flexDirection: "column" }}>
+      <body sx={{ height: '100dvh', display: 'flex', flexDirection: 'column', backgroundColor: 'background.default' }}>
         <Providers>
-          <Header />
-
-          <main
-            id="main"
-            sx={{
-              p: 4,
-              width: 1,
-              display: "flex",
-              flexDirection: "row-reverse",
-              flexGrow: 1,
-              "&>*": { flexGrow: 1 },
-            }}
-          >
-            {children}
-          </main>
+          <Layout children={children} />
         </Providers>
 
         <TanStackRouterDevtools position="bottom-right" />
