@@ -37,9 +37,9 @@
 }
 
 h1 {
-  font-size: 32px !important;
-  font-weight: 600 !important;
-  letter-spacing: 1px !important;
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: 1px;
   color: var(--mui-palette-primary-main);
   cursor: pointer;
   &::selection {

@@ -1,27 +1,8 @@
-import { ButtonBase } from '@mui/material';
-import { styled } from '@mui/material-pigment-css';
+import ButtonBase from '@mui/material/ButtonBase';
 import { createLink, type CreateLinkProps } from '@tanstack/react-router';
-import { type FC, useMemo } from 'react';
+import { type FC } from 'react';
 
 const NavLinkBase = createLink(ButtonBase);
-// const NavLinkBase = styled(createLink(ButtonBase))(({ theme }) => {
-//   return {
-//     '&': {
-//       width: '100%',
-//       justifyContent: 'flex-start',
-//       gap: theme.spacing(1),
-//       paddingInline: theme.spacing(1),
-//       height: 40,
-//       borderRadius: `var(--mui-shape-borderRadius,${theme.shape.borderRadius}px)`,
-//       color: `var(--mui-palette-primary-main,${theme.palette.primary.main})`,
-//       transition: theme.transitions.create('all'),
-//     },
-//     '&.active': {
-//       color: `var(--mui-palette-primary-contrastText,${theme.palette.primary.contrastText})`,
-//       backgroundColor: `var(--mui-palette-primary-main,${theme.palette.primary.main})`,
-//     },
-//   };
-// });
 
 interface NavLinkProps extends CreateLinkProps {
   icon: FC;
@@ -29,7 +10,6 @@ interface NavLinkProps extends CreateLinkProps {
 }
 
 export const NavLink = ({ icon: Icon, label, ...props }: NavLinkProps) => {
-  //   const Link = useMemo(() => createLink(ButtonBase), []);
   return (
     <NavLinkBase
       preload="intent"

@@ -15,7 +15,10 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "🪟/*": ["./src/components/*"],
+      "🎨/*": ["./src/css/*"],
+      "⚙️": ["./src/setup/index"],
     },
     "noEmit": true
   }

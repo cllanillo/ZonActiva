@@ -1,12 +1,12 @@
 /// <reference types="vinxi/types/client" />
-import { globalCss } from '@mui/material-pigment-css';
+import pigmentTheme from '@pigment-css/react/theme';
 import { StartClient } from '@tanstack/react-start';
 import { hydrateRoot } from 'react-dom/client';
-
-import { createRouter } from '~/setup';
-
-import '@mui/material-pigment-css/styles.css';
+import { createRouter, theme } from '⚙️';
 
 const router = createRouter();
+
+Object.assign(pigmentTheme, theme);
+console.log('🚀 ~ CLIENT.pigmentTheme:', 'transitions' in pigmentTheme);
 
 hydrateRoot(document, <StartClient router={router} />);

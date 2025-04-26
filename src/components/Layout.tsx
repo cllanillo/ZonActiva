@@ -1,9 +1,11 @@
-import { TextField, Typography } from '@mui/material';
+import { Collapse, Slide } from '@mui/material';
+import Fade from '@mui/material/Fade';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { useLocation } from '@tanstack/react-router';
 import { lazy, useReducer, type PropsWithChildren } from 'react';
 import { SwitchTransition } from 'react-transition-group';
-
-import { NavLink } from '~/components/NavLink';
+import { NavLink } from '🪟/NavLink';
 
 const HomeIcon = lazy(() => import('@mui/icons-material/Home'));
 const MenuIcon = lazy(() => import('@mui/icons-material/MenuRounded'));
@@ -12,14 +14,28 @@ const MovieIcon = lazy(() => import('@mui/icons-material/MovieOutlined'));
 const PlaceIcon = lazy(() => import('@mui/icons-material/Place'));
 
 export function Layout({ children }: PropsWithChildren) {
+  //   console.log('🚀 ~ Layout ~ children:', children);
   const [expand, updateExpand] = useReducer((p) => !p, false);
+
   const loc = useLocation();
-  console.log('🚀 ~ Layout:', loc);
 
   return (
     <>
-      <header sx={{ width: 1, px: 2, py: 1.5, display: 'flex', backdropFilter: 'blur(2px)', position: 'sticky', top: 0, gap: 1.5 }}>
-        <Typography variant="h1" sx={{ fontSize: 32, fontWeight: 600, letterSpacing: 1, color: 'primary.main', cursor: 'pointer' }} onClick={updateExpand}>
+      <header sx={{ width: 1, px: 2, py: 1.5, display: 'flex', justifyContent: 'space-between', backdropFilter: 'blur(2px)', position: 'sticky', top: 0, gap: 1.5 }}>
+        <Typography
+          variant="h1"
+          sx={{
+            fontSize: 40,
+            fontWeight: 600,
+            letterSpacing: 1,
+            color: 'primary.main',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+          }}
+          onClick={updateExpand}
+        >
           {expand ? <MenuOpenIcon /> : <MenuIcon />} ZonActiva
         </Typography>
 
@@ -45,23 +61,22 @@ export function Layout({ children }: PropsWithChildren) {
           '&>*': { flexGrow: 1 },
         }}
       >
-        <SwitchTransition>
-          {/* TODO: Fix Fade transitions, undefined theme.transition props
-          <Fade key={loc.href} in> */}
-          <span sx={{ position: 'relative' }}>
-            {children}
-            <div
-              sx={{
-                position: 'absolute',
-                inset: 0,
-                zIndex: 1,
-                boxShadow: '0px 0px 0px 8px currentColor,inset 4px 4px 20px rgb(0,0,0)',
-                borderRadius: 1,
-                pointerEvents: 'none',
-              }}
-            />
-          </span>
-          {/* </Fade> */}
+        <SwitchTransition mode="in-out">
+          <Slide direction="up" key={loc.href}>
+            <span sx={{ position: 'relative' }}>
+              {children}
+              <div
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 1,
+                  boxShadow: '0px 0px 0px 8px currentColor,inset 4px 4px 20px rgb(0,0,0)',
+                  borderRadius: 1,
+                  pointerEvents: 'none',
+                }}
+              />
+            </span>
+          </Slide>
         </SwitchTransition>
 
         <nav

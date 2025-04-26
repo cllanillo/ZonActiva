@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import Stack from '@mui/material-pigment-css/Stack';
 import { createFileRoute } from '@tanstack/react-router';
 

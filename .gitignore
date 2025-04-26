@@ -13,6 +13,7 @@ dist
 dist-ssr
 *.local
 .vinxi
+.output
 
 # Editor directories and files
 .vscode/*
