@@ -1,14 +1,13 @@
 import { pigment, type PigmentOptions } from '@pigment-css/vite-plugin';
 import { defineConfig } from '@tanstack/react-start/config';
+import { resolve } from 'path';
 import tsConfigPaths from 'vite-tsconfig-paths';
 
-import { theme } from './src/setup/theme';
+import { theme } from './src/configuration/theme';
 
 const pigmentConfig: PigmentOptions = {
     transformLibraries: [
         '@mui/material',
-        // '@mui/x-date-pickers',
-        // '@mui/x-date-pickers-pro',
     ],
     theme,
 };
@@ -17,22 +16,20 @@ export default defineConfig({
     server: { preset: 'bun' },
     tsr: { appDirectory: 'src', },
     vite: {
-        ssr: {
-            noExternal: [
-                // '@emotion/react',
-                // '@emotion/styled',
-                // '@mui/material',
-                // '@mui/x-date-pickers',
-                // '@mui/x-date-pickers-pro',
-                // '@mui/material-pigment-css',
-                // '@pigment-css/react',
-            ],
-        },
         plugins: [
             pigment(pigmentConfig),
             tsConfigPaths({
                 projects: ['./tsconfig.json'],
             }),
         ],
+        resolve: {
+            alias: {
+                ...(process.env.BUILD_ENV === 'server' && {
+                    // Solo cuando es para el server (SSR build)
+                    '@pigment-css/react': resolve('./src/__mocks__/pigment-react-ssr-mock.ts'),
+                }),
+            },
+        },
+
     },
 })

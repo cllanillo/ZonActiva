@@ -15,43 +15,9 @@ export function AddEvent() {
         Create Event
       </Button>
 
-      <div
-        sx={[
-          (theme) => ({
-            position: 'absolute',
-            maxHeight: '75dvh',
-            width: '50vw',
-            borderRadius: 1,
-            p: 2,
-            top: 46,
-            left: 16,
-            zIndex: -1,
-            scale: 0,
-            transformOrigin: 'top left',
-            transition: theme.transitions.create('all'),
-          }),
-          open && { zIndex: 1, scale: 1, boxShadow: 1, bgcolor: 'background.paper', color: 'text.primary' },
-        ]}
-      >
+      <Popover open={open} anchorEl={buttonRef.current} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} transformOrigin={{ vertical: 'top', horizontal: 'left' }} onClose={updateOpen}>
         <EventForm />
-      </div>
-      {/* <Popover
-        open={open}
-        anchorEl={buttonRef.current}
-        slots={{ transition: (props) => props.children }}
-        slotProps={{ backdrop: { slots: { transition: (props) => props.children } }, }}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        onClose={updateOpen}
-      > 
-        <EventForm />
-      </Popover>*/}
+      </Popover>
     </>
   );
 }

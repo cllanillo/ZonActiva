@@ -1,17 +1,32 @@
 import { createTheme, type SxProps, type Theme } from "@mui/material";
 
+const palette = {
+    background: { default: '#0A0A0A', paper: '#1E1E1E' },
+    divider: 'rgb(125 125 125)',
+    primary: { main: '#8EE53F' },
+    mode: 'dark',
+} as const,
+    shape = { borderRadius: 12 } as const,
+    spacing = 'var(--mui-spacing, 8)' as const;
+
 export const theme = createTheme({
     components: {
         MuiButton: {
             styleOverrides: {
-                root: { textTransform: 'none' },
+                root: {
+                    textTransform: 'none',
+                    '&.MuiButton-outlined': {
+                        backgroundColor: `var(--mui-palette-background-paper, ${palette.background.paper})`,
+                        boxShadow: '4px 4px 20px rgba(var(--mui-palette-primary-mainChannel, 142 229 63) / 0.35)',
+                    }
+                },
             }
         },
         MuiFilledInput: {
             styleOverrides: {
                 root: {
-                    borderRadius: 'var(--mui-shape-border-radius)',
-                    '&>input': { padding: 'calc(2 * var(--mui-spacing)) calc(1.5 * var(--mui-spacing)) var(--mui-spacing)' },
+                    borderRadius: `var(--mui-shape-border-radius, ${shape.borderRadius})`,
+                    '&>input': { padding: `calc(2 * ${spacing}) calc(1.5 * ${spacing}) ${spacing}` },
                 }
             }
         },
@@ -23,13 +38,8 @@ export const theme = createTheme({
         MuiPaper: { defaultProps: { elevation: 0 } }
     },
     cssVariables: true,
-    palette: {
-        background: { default: '#0A0A0A', paper: '#1E1E1E' },
-        divider: 'rgb(125 125 125)',
-        primary: { main: '#8EE53F' },
-        mode: 'dark',
-    },
-    shape: { borderRadius: 12 },
+    palette,
+    shape,
     typography: { fontFamily: `'Roboto Variable', sans-serif` },
 });
 

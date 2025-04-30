@@ -1,10 +1,6 @@
-import { Collapse, Slide } from '@mui/material';
-import Fade from '@mui/material/Fade';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { useLocation } from '@tanstack/react-router';
 import { lazy, useReducer, type PropsWithChildren } from 'react';
-import { SwitchTransition } from 'react-transition-group';
 import { NavLink } from '🪟/NavLink';
 
 const HomeIcon = lazy(() => import('@mui/icons-material/Home'));
@@ -14,10 +10,7 @@ const MovieIcon = lazy(() => import('@mui/icons-material/MovieOutlined'));
 const PlaceIcon = lazy(() => import('@mui/icons-material/Place'));
 
 export function Layout({ children }: PropsWithChildren) {
-  //   console.log('🚀 ~ Layout ~ children:', children);
   const [expand, updateExpand] = useReducer((p) => !p, false);
-
-  const loc = useLocation();
 
   return (
     <>
@@ -58,26 +51,25 @@ export function Layout({ children }: PropsWithChildren) {
           color: 'background.paper',
           bgcolor: 'currentColor',
           boxShadow: '16px 16px 24px currentColor',
-          '&>*': { flexGrow: 1 },
+          '&>span': { flexGrow: 1, color: 'primary.main' },
         }}
       >
-        <SwitchTransition mode="in-out">
-          <Slide direction="up" key={loc.href}>
-            <span sx={{ position: 'relative' }}>
-              {children}
-              <div
-                sx={{
-                  position: 'absolute',
-                  inset: 0,
-                  zIndex: 1,
-                  boxShadow: '0px 0px 0px 8px currentColor,inset 4px 4px 20px rgb(0,0,0)',
-                  borderRadius: 1,
-                  pointerEvents: 'none',
-                }}
-              />
-            </span>
-          </Slide>
-        </SwitchTransition>
+        <span sx={{ position: 'relative' }}>
+          {children}
+          <div
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 1,
+              color: 'background.paper',
+              outline: 8,
+              outlineColor: 'currentcolor',
+              boxShadow: 'inset 4px 4px 20px rgb(0,0,0)',
+              borderRadius: 1,
+              pointerEvents: 'none',
+            }}
+          />
+        </span>
 
         <nav
           sx={[

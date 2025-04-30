@@ -10,7 +10,7 @@ export const Providers = (props: PropsWithChildren) => (
   <>
     <DefaultPropsProvider
       value={{
-        MuiButton: { variant: 'contained' },
+        MuiButton: { variant: 'outlined' },
         MuiFilledInput: { disableUnderline: true },
         MuiPaper: { elevation: 0 },
         MuiTextField: { size: 'small', variant: 'filled' },
