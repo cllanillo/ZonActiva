@@ -18,15 +18,19 @@ export const NavLink = ({ icon: Icon, label, ...props }: NavLinkProps) => {
       sx={(theme) => ({
         width: '100%',
         justifyContent: 'flex-start',
-        gap: 1,
+        gap: 0.75,
         paddingInline: 1,
         height: 40,
+        color: 'text.disabled',
+        bgcolor: 'background.paper',
+        border: 1,
+        backdropFilter: 1,
         borderRadius: 1,
-        color: 'primary.main',
         transition: theme.transitions.create('all'),
+        '&>svg': { px: 0.25, borderRadius: 1, boxSizing: 'content-box' },
         '&.active': {
-          color: 'primary.contrastText',
-          backgroundColor: 'primary.main',
+          bgcolor: 'primary.glass',
+          color: 'primary.main',
         },
       })}
     >

@@ -13,7 +13,6 @@ const pigmentConfig: PigmentOptions = {
 };
 
 export default defineConfig({
-    server: { preset: 'bun' },
     tsr: { appDirectory: 'src', },
     vite: {
         plugins: [
@@ -22,6 +21,7 @@ export default defineConfig({
                 projects: ['./tsconfig.json'],
             }),
         ],
+        ssr: { noExternal: ['@mui/material'] },
         resolve: {
             alias: {
                 ...(process.env.BUILD_ENV === 'server' && {

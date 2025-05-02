@@ -1,11 +1,27 @@
 import Typography from '@mui/material/Typography';
-import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
-import { Field, Formik } from 'formik';
-import { Submit, TextField } from '🪟/field';
+import { Formik } from 'formik';
+import { useMemo } from 'react';
+import * as Yup from 'yup';
+import { FormikDateRange, FormikFile, FormikSubmit, FormikText } from '🪟/field';
 
 export default function EventForm() {
+  const yupSchema = useMemo(
+    () =>
+      Yup.object().shape({
+        name: Yup.string()
+          .max(25, ({ max }) => `Name must be less than ${max} charaters`)
+          .required('Name is required'),
+        date: Yup.date().required('Date is required'),
+        category: Yup.string().required('Category is required'),
+        image: Yup.object().required('Image is required'),
+      }),
+    [],
+  );
+
   return (
     <Formik
+      //   validationSchema={yupSchema}
+      initialValues={{}}
       onSubmit={async (values) => {
         console.log('🚀 ~ onSubmit:', values);
         return null;
@@ -16,22 +32,31 @@ export default function EventForm() {
 }
 
 function InnerForm() {
-//   console.log('🚀 ~ InnerForm ~ p:', p);
+  //   console.log('🚀 ~ InnerForm ~ p:', p);
   return (
-    <form sx={{ height: 1, '&>div': { display: 'flex', justifyContent: 'space-between' } }}>
+    <form
+      sx={{
+        height: 1,
+        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 5,
+        '&>div': { display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2, '&>div': { display: 'flex', flexDirection: 'column', flexGrow: 1 } },
+      }}
+    >
       {/* Name, 📅, Category */}
-      <div>
+      <div sx={{ mt: '54px', ml: '116px' }}>
         <div>
           <Typography variant="subtitle1">Name</Typography>
-          <TextField name="name" />
+          <FormikText name="name" fullWidth />
         </div>
         <div>
           <Typography variant="subtitle1">Date</Typography>
-          <Field name="name" component={DateRangePicker} />
+          <FormikDateRange name="date" slotProps={{ textField: { fullWidth: true } }} />
         </div>
         <div>
           <Typography variant="subtitle1">Category</Typography>
-          <TextField name="category" />
+          <FormikText name="category" fullWidth />
         </div>
       </div>
 
@@ -39,12 +64,12 @@ function InnerForm() {
       <div>
         <div>
           <Typography variant="subtitle1">Imagen</Typography>
-          <Field name="image" type="file" />
+          <FormikFile name="image" />
         </div>
 
         <div>
           <Typography variant="subtitle1">Description</Typography>
-          <TextField name="name" multiline minRows={10} />
+          <FormikText name="name" multiline minRows={10} fullWidth />
         </div>
       </div>
 
@@ -55,7 +80,7 @@ function InnerForm() {
           {/* <Field name="name" component={TextField} /> */}
         </div>
 
-        <Submit sx={{ mt: 'auto' }} />
+        <FormikSubmit sx={{ mt: 'auto' }} />
       </div>
     </form>
   );

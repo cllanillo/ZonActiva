@@ -4,6 +4,7 @@ import Map, { FullscreenControl, GeolocateControl, NavigationControl, ScaleContr
 
 import '@mui/material-pigment-css/styles.css';
 import { AddEvent } from '🪟/event/AddEvent';
+import { Portal } from '@mui/material';
 
 export const Route = createFileRoute('/map')({
   component: RouteComponent,
@@ -11,7 +12,7 @@ export const Route = createFileRoute('/map')({
 
 const TOKEN = 'pk.eyJ1IjoibGxhbmlsbG8tanIiLCJhIjoiY205cmFlYmJqMHZsNTJpczRpY25zcnZtdyJ9.K8w98iWFPbvTr5q5iR6glQ'; // Set your mapbox token here
 function RouteComponent() {
-//   const [popupInfo, setPopupInfo] = useState<{ longitude: number; latitude: number; state: any; city: any; image: any }>();
+  //   const [popupInfo, setPopupInfo] = useState<{ longitude: number; latitude: number; state: any; city: any; image: any }>();
 
   return (
     <>

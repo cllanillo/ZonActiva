@@ -35,59 +35,43 @@ export function Layout({ children }: PropsWithChildren) {
         <TextField label={'Search'} />
       </header>
 
-      <main
+      <span
         id="main"
         sx={{
+          position: 'relative',
+          overflow: 'hidden',
           display: 'flex',
-          flexDirection: 'row-reverse',
           flexGrow: 1,
           borderTop: 2,
           borderRadius: 2,
-          borderTopRightRadius: '.5%',
-          borderBottomLeftRadius: '.5%',
+          borderBottomLeftRadius: 0,
           borderBottomRightRadius: 0,
-          ml: 3,
-          overflow: 'hidden',
-          color: 'background.paper',
-          bgcolor: 'currentColor',
-          boxShadow: '16px 16px 24px currentColor',
-          '&>span': { flexGrow: 1, color: 'primary.main' },
+          borderColor: 'background.paper',
+          color: 'text.primary',
+          bgcolor: 'background.paper',
+          boxShadow: '16px 16px 24px var(--mui-palette-background-paper)',
+          '&>div:first-of-type': { borderRadius: 2, overflow: 'hidden' },
         }}
       >
-        <span sx={{ position: 'relative' }}>
-          {children}
-          <div
-            sx={{
-              position: 'absolute',
-              inset: 0,
-              zIndex: 1,
-              color: 'background.paper',
-              outline: 8,
-              outlineColor: 'currentcolor',
-              boxShadow: 'inset 4px 4px 20px rgb(0,0,0)',
-              borderRadius: 1,
-              pointerEvents: 'none',
-            }}
-          />
-        </span>
+        {children}
 
         <nav
+          id="nav"
           sx={[
-            {
+            (theme) => ({
+              position: 'absolute',
+              top: theme.spacing(2),
+              left: theme.spacing(2),
               maxWidth: 'fit-content',
-              py: 3,
-              px: 0.5,
               display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'column',
-              gap: 0.5,
-              borderRight: 1,
-              borderColor: 'inherit',
-              zIndex: 1,
-            },
+              alignItems: 'start',
+              gap: 2,
+              pointerEvents: 'none',
+              '& *': { pointerEvents: 'auto' },
+            }),
             !expand &&
               ((theme) => ({
-                '&>a': {
+                '& a': {
                   gap: theme.spacing(0),
                   '&>p': {
                     width: 0,
@@ -104,13 +88,29 @@ export function Layout({ children }: PropsWithChildren) {
             console.log('🚀 ~ onClick.aside:', event.target, anchorTarget.getBoundingClientRect());
           }}
         >
-          <NavLink to="/" icon={HomeIcon} label="Home" />
+          <span sx={{ display: 'flex', flexDirection: 'column', gap: 'inherit' }}>
+            <NavLink to="/" icon={HomeIcon} label="Home" />
 
-          <NavLink to="/map" icon={PlaceIcon} label="Map" />
+            <NavLink to="/map" icon={PlaceIcon} label="Map" />
 
-          <NavLink to="/stories" icon={MovieIcon} label="Stories" />
+            <NavLink to="/stories" icon={MovieIcon} label="Stories" />
+          </span>
         </nav>
-      </main>
+
+        <div
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 1,
+            color: 'background.paper',
+            outline: 8,
+            outlineColor: 'currentcolor',
+            boxShadow: 'inset 4px 4px 20px rgb(0,0,0)',
+            borderRadius: 1,
+            pointerEvents: 'none',
+          }}
+        />
+      </span>
     </>
   );
 }

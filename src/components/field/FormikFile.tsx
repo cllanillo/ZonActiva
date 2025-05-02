@@ -1,43 +1,48 @@
-import { useEffect } from 'react';
+import { type ChangeEvent, useCallback, useEffect } from 'react';
 import type { FormikInputProps } from './FormikInputTypes';
 import ButtonBase from '@mui/material/ButtonBase';
 import { useField } from 'formik';
 
 export function FormikFile({ name }: FormikInputProps) {
   const [input, meta, helper] = useField<File>(name);
+
+  const handleChange = useCallback(
+    (event: DragEvent | ChangeEvent<HTMLInputElement>) => {
+      const selectFiles = Array.from((event instanceof DragEvent ? event.dataTransfer : event.currentTarget)?.files ?? []);
+      if (!selectFiles?.[0]) return;
+
+      helper.setValue(selectFiles[0]);
+    },
+    [helper.setValue],
+  );
   useEffect(() => {
-    if (true) return;
+    // const handleDrop = (event: DragEvent) => {
+    //   event.preventDefault();
+    //   event.dataTransfer && event.type === 'drop' && handleChange(event);
+    // };
 
-    const handleDrop = (event: DragEvent) => {
-      event.preventDefault();
-      event.dataTransfer && event.type === 'drop' && input.onChange({ dataTransfer: event.dataTransfer });
-    };
-
-    window.addEventListener('drop', handleDrop);
-    window.addEventListener('dragover', handleDrop);
+    window.addEventListener('drop', handleChange);
+    // window.addEventListener('dragover', handleDrop);
     return () => {
-      window.removeEventListener('drop', handleDrop);
-      window.removeEventListener('dragover', handleDrop);
+      window.removeEventListener('drop', handleChange);
+    //   window.removeEventListener('dragover', handleDrop);
     };
   }, []);
 
   return (
-    <ButtonBase focusRipple>
+    <ButtonBase focusRipple sx={{ border: 1, borderStyle: 'dashed', flexGrow: 1 }}>
       <input
-        value=""
+        name={name}
         type="file"
-        multiple
+        accept="image/*"
         onDragEnter={(event) => {
           event.currentTarget.parentElement!.classList.add(FormikFile.draggingOverClass);
         }}
         onDragLeave={(event) => {
           event.currentTarget.parentElement!.classList.remove(FormikFile.draggingOverClass);
         }}
-        onChange={(event) => {
-          console.log('🚀 ~ FormikFile ~ event:', event.target.value);
-
-          input.onChange(event);
-        }}
+        onChange={handleChange}
+        sx={{ opacity: 0, position: 'absolute', inset: 0 }}
       />
     </ButtonBase>
   );

@@ -6,7 +6,7 @@ interface SubmitProps {
   sx?: ButtonProps['sx'];
 }
 
-export function Submit({ sx }: SubmitProps) {
+export function FormikSubmit({ sx }: SubmitProps) {
   const formik = useFormikContext();
   const submitRef = useRef(formik.handleSubmit);
 
