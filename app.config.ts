@@ -17,19 +17,29 @@ export default defineConfig({
     vite: {
         plugins: [
             pigment(pigmentConfig),
-            tsConfigPaths({
-                projects: ['./tsconfig.json'],
-            }),
+            tsConfigPaths({ projects: ['./tsconfig.json'], }),
         ],
         ssr: { noExternal: ['@mui/material'] },
-        resolve: {
-            alias: {
-                ...(process.env.BUILD_ENV === 'server' && {
-                    // Solo cuando es para el server (SSR build)
-                    '@pigment-css/react': resolve('./src/__mocks__/pigment-react-ssr-mock.ts'),
-                }),
-            },
-        },
-
+        // build: {
+        //     outDir: 'app/css/rendered',
+        //     rollupOptions: {
+        //         input: [resolve(__dirname, './app/client.tsx')],
+        //         output: {
+        //             assetFileNames: '[name][extname]',
+        //         },
+        //         external: ['/app/css/rendered/style.css?url'],
+        //     },
+        //     assetsDir: '.',
+        //     copyPublicDir: false,
+        //     emptyOutDir: true,
+        //     cssCodeSplit: false,
+        // }
+        // resolve: {
+        //     alias: {
+        //         ...(process.env.BUILD_ENV === 'server' && {
+        //             '@pigment-css/react': resolve('./src/__mocks__/pigment-react-ssr-mock.ts'),
+        //         }),
+        //     },
+        // },
     },
 })

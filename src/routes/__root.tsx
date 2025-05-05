@@ -3,15 +3,15 @@ import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-r
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import type { PropsWithChildren } from 'react';
 import { Providers } from '⚙️';
-import RootCss from '🎨/__root.css?url';
 import { Layout } from '🪟/Layout';
 
-import '@mui/material-pigment-css/styles.css';
+import RootCss from '🎨/__root.css?url';
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [{ charSet: 'utf-8' }, { name: 'viewport', content: 'width=device-width, initial-scale=1' }, { title: 'ZonActiva' }],
     links: [
+      { rel: 'icon', href: 'https://raw.githubusercontent.com/cllanillo/zon-activa/refs/heads/main/zonactiva-icon.webp' },
       { rel: 'stylesheet', href: RootCss },
       { rel: 'stylesheet', href: RobotoVariable },
     ],

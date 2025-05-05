@@ -1,13 +1,13 @@
+import HomeIcon from '@mui/icons-material/Home';
+import MenuOpenIcon from '@mui/icons-material/MenuOpenRounded';
+import MenuIcon from '@mui/icons-material/MenuRounded';
+import MovieIcon from '@mui/icons-material/MovieOutlined';
+import PlaceIcon from '@mui/icons-material/Place';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { lazy, useReducer, type PropsWithChildren } from 'react';
+import { useReducer, type PropsWithChildren } from 'react';
 import { NavLink } from '🪟/NavLink';
 
-const HomeIcon = lazy(() => import('@mui/icons-material/Home'));
-const MenuIcon = lazy(() => import('@mui/icons-material/MenuRounded'));
-const MenuOpenIcon = lazy(() => import('@mui/icons-material/MenuOpenRounded'));
-const MovieIcon = lazy(() => import('@mui/icons-material/MovieOutlined'));
-const PlaceIcon = lazy(() => import('@mui/icons-material/Place'));
 
 export function Layout({ children }: PropsWithChildren) {
   const [expand, updateExpand] = useReducer((p) => !p, false);
