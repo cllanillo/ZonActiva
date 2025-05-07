@@ -8,32 +8,37 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as StoriesImport } from './routes/stories'
 import { Route as MapImport } from './routes/map'
-import { Route as IndexImport } from './routes/index'
+
+// Create Virtual Routes
+
+const StoriesLazyImport = createFileRoute('/stories')()
+const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
 
-const StoriesRoute = StoriesImport.update({
+const StoriesLazyRoute = StoriesLazyImport.update({
   id: '/stories',
   path: '/stories',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/stories.lazy').then((d) => d.Route))
 
 const MapRoute = MapImport.update({
   id: '/map',
   path: '/map',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/map.lazy').then((d) => d.Route))
 
-const IndexRoute = IndexImport.update({
+const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
@@ -43,7 +48,7 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexImport
+      preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/map': {
@@ -57,7 +62,7 @@ declare module '@tanstack/react-router' {
       id: '/stories'
       path: '/stories'
       fullPath: '/stories'
-      preLoaderRoute: typeof StoriesImport
+      preLoaderRoute: typeof StoriesLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -66,22 +71,22 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof IndexLazyRoute
   '/map': typeof MapRoute
-  '/stories': typeof StoriesRoute
+  '/stories': typeof StoriesLazyRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof IndexLazyRoute
   '/map': typeof MapRoute
-  '/stories': typeof StoriesRoute
+  '/stories': typeof StoriesLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
+  '/': typeof IndexLazyRoute
   '/map': typeof MapRoute
-  '/stories': typeof StoriesRoute
+  '/stories': typeof StoriesLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -94,15 +99,15 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  IndexLazyRoute: typeof IndexLazyRoute
   MapRoute: typeof MapRoute
-  StoriesRoute: typeof StoriesRoute
+  StoriesLazyRoute: typeof StoriesLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  IndexLazyRoute: IndexLazyRoute,
   MapRoute: MapRoute,
-  StoriesRoute: StoriesRoute,
+  StoriesLazyRoute: StoriesLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -121,13 +126,13 @@ export const routeTree = rootRoute
       ]
     },
     "/": {
-      "filePath": "index.tsx"
+      "filePath": "index.lazy.tsx"
     },
     "/map": {
       "filePath": "map.tsx"
     },
     "/stories": {
-      "filePath": "stories.tsx"
+      "filePath": "stories.lazy.tsx"
     }
   }
 }

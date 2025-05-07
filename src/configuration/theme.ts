@@ -83,7 +83,11 @@ export var theme = ((theme?: Theme) => {
         unstable_sxConfig: {
             backdropFilter: {
                 themeKey: 'blur',
-            }
+            },
+            btlr: {
+                cssProperty: 'borderTopLeftRadius',
+                themeKey: 'shape.borderRadius'
+            },
         }
     });
     Object.values(theme.palette).forEach((color) => {

@@ -1,0 +1,32 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "ZonActiva",
+  "version": "0.1.0",
+  "identifier": "ZonActiva",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "bun dev:vite",
+    "beforeBuildCommand": "bun build:vite"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "ZonActiva",
+        "width": 800,
+        "height": 600,
+        "resizable": true,
+        "fullscreen": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "category": "SocialNetworking",
+    "targets": "all",
+    "icon": ["icons/64x64.webp", "icons/64x64.png", "icons/128x128.png", "icons/icon.ico"]
+  }
+}

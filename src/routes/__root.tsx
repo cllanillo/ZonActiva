@@ -4,15 +4,9 @@ import type { PropsWithChildren } from 'react';
 import { Providers } from '⚙️';
 import { Layout } from '🪟/Layout';
 
-// import RobotoVariable from '@fontsource-variable/roboto?url';
-// import RootCss from '🎨/__root.css?url';
-
 import '@fontsource-variable/roboto';
 import '@mui/material-pigment-css/styles.css';
 import '🎨/__root.css';
-
-// Object.assign(pigmentTheme, theme);
-// console.log('🚀 ~ pigmentTheme:', pigmentTheme, theme);
 
 export const Route = createRootRoute({
   //   head: () => ({
