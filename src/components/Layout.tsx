@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography';
 import { useReducer, type PropsWithChildren } from 'react';
 import { NavLink } from '🪟/NavLink';
 
-
 export function Layout({ children }: PropsWithChildren) {
   const [expand, updateExpand] = useReducer((p) => !p, false);
 
@@ -60,6 +59,7 @@ export function Layout({ children }: PropsWithChildren) {
           sx={[
             (theme) => ({
               position: 'absolute',
+              zIndex: 1000,
               top: theme.spacing(2),
               left: theme.spacing(2),
               maxWidth: 'fit-content',

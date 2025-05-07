@@ -13,10 +13,13 @@ export const Providers = (props: PropsWithChildren) => (
   <Auth0Provider domain="dev-golaqzz6py118e6i.us.auth0.com" clientId="5qwv0vgKLD35wNn4nD892yThWkwA8UQ0" authorizationParams={{ redirect_uri: globalThis?.origin }}>
     <ThemeProvider theme={theme}>
       <DefaultPropsProvider
-        value={Object.entries(theme.components).reduce((acc, [key, item]) => {
-          acc[key] = item.defaultProps;
-          return acc;
-        }, {})}
+        value={Object.entries(theme.components ?? {}).reduce(
+          (acc, [key, item]) => {
+            acc[key] = item.defaultProps;
+            return acc;
+          },
+          {} as Record<string, any>,
+        )}
       >
         <LocalizationProvider dateAdapter={AdapterDayjs}>{props.children}</LocalizationProvider>
       </DefaultPropsProvider>

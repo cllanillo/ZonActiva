@@ -12,11 +12,11 @@ const pigmentConfig: PigmentOptions = {
     theme,
 };
 
-export default defineConfig({
+const config = defineConfig({
     tsr: { appDirectory: 'src', },
     vite: {
         plugins: [
-            pigment(pigmentConfig),
+            { enforce: 'pre', ...pigment(pigmentConfig) },
             tsConfigPaths({ projects: ['./tsconfig.json'], }),
         ],
         ssr: { noExternal: ['@mui/material'] },
@@ -43,3 +43,8 @@ export default defineConfig({
         // },
     },
 })
+
+config.then((conf) => {
+    console.log("🚀 ~ config:", pigment(pigmentConfig), conf.config.routers.map(x => x.plugins?.apply()))
+})
+export default config;

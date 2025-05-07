@@ -1,4 +1,5 @@
-import { createTheme, } from "@mui/material/styles";
+import pigmentTheme from '@pigment-css/react/theme';
+import { createTheme } from "@mui/material/styles";
 
 import type { BaseTextFieldProps, ButtonBaseProps, ComponentsOverrides, FilledInputProps, SxProps, Theme } from "@mui/material";
 import type { PickersDayClassKey, PickersFilledInputClassKey, PickersTextFieldClassKey } from "@mui/x-date-pickers-pro";
@@ -11,9 +12,9 @@ const palette = {
 } as const,
     blur = ['blur(0px)', 'blur(2px)', 'blur(4px)'] as const,
     shape = { borderRadius: '12px' } as const,
-    spacing = 'var(--mui-spacing, 8)' as const;
+    spacing = 'var(--mui-spacing, 8px)' as const;
 
-export var theme = ((theme: Theme) => {
+export var theme = ((theme?: Theme) => {
     theme = theme ?? createTheme({
         components: {
             MuiButton: {
@@ -90,15 +91,10 @@ export var theme = ((theme: Theme) => {
 
         Object.assign(color, { glass: `${color.main}80` })
     })
+    Object.assign(pigmentTheme, theme);
 
     return theme;
 })(theme);
-
-// declare module '@mui/material-pigment-css' {
-//     interface ThemeArgs {
-//         theme: Theme;
-//     }
-// }
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
@@ -135,7 +131,8 @@ declare module '@mui/material/styles' {
     }
 
     interface ThemeOptions {
-        blur: string[];
+        blur: typeof blur;
+        shape: typeof shape;
     }
 }
 
