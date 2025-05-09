@@ -1,38 +1,16 @@
 import HomeIcon from '@mui/icons-material/Home';
-import MenuOpenIcon from '@mui/icons-material/MenuOpenRounded';
-import MenuIcon from '@mui/icons-material/MenuRounded';
 import MovieIcon from '@mui/icons-material/MovieOutlined';
 import PlaceIcon from '@mui/icons-material/Place';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import { useReducer, type PropsWithChildren } from 'react';
+import { createRef, useMemo, type PropsWithChildren, type RefObject } from 'react';
 import { NavLink } from '🪟/NavLink';
+import { Header } from './Header';
 
 export function Layout({ children }: PropsWithChildren) {
-  const [expand, updateExpand] = useReducer((p) => !p, false);
+  const expandableRefs = useMemo(() => [createRef()] as Array<RefObject<HTMLElement>>, []);
 
   return (
     <>
-      <header sx={{ width: 1, px: 2, py: 1.5, display: 'flex', justifyContent: 'space-between', backdropFilter: 'blur(2px)', position: 'sticky', top: 0, gap: 1.5 }}>
-        <Typography
-          variant="h1"
-          sx={{
-            fontSize: 40,
-            fontWeight: 600,
-            letterSpacing: 1,
-            color: 'primary.main',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-          }}
-          onClick={updateExpand}
-        >
-          {expand ? <MenuOpenIcon /> : <MenuIcon />} ZonActiva
-        </Typography>
-
-        <TextField label={'Search'} />
-      </header>
+      <Header expandableRefs={expandableRefs} />
 
       <span
         id="main"
@@ -47,7 +25,7 @@ export function Layout({ children }: PropsWithChildren) {
           borderBottomRightRadius: 0,
           borderColor: 'background.paper',
           color: 'text.primary',
-          bgcolor: 'background.paper',
+          bgcolor: 'background.paperGlass',
           boxShadow: '16px 16px 24px var(--mui-palette-background-paper)',
           '&>div:first-of-type': { borderRadius: 2, overflow: 'hidden' },
         }}
@@ -56,36 +34,32 @@ export function Layout({ children }: PropsWithChildren) {
 
         <nav
           id="nav"
-          sx={[
-            (theme) => ({
-              position: 'absolute',
-              zIndex: 1000,
-              top: theme.spacing(2),
-              left: theme.spacing(2),
-              maxWidth: 'fit-content',
-              display: 'flex',
-              alignItems: 'start',
-              gap: 2,
-              pointerEvents: 'none',
-              '& *': { pointerEvents: 'auto' },
-            }),
-            !expand &&
-              ((theme) => ({
-                '& a': {
-                  gap: theme.spacing(0),
-                  '&>p': {
-                    width: 0,
-                    overflow: 'hidden',
-                    interpolateSize: 'allow-keywords',
-                  },
-                },
-              })),
-          ]}
+          ref={expandableRefs[0]}
+          sx={{
+            position: 'absolute',
+            zIndex: 1000,
+            top: 0,
+            left: 0,
+            mt: 2,
+            ml: 2,
+            maxWidth: 'fit-content',
+            display: 'flex',
+            alignItems: 'start',
+            gap: 2,
+            pointerEvents: 'none',
+            '& *': { pointerEvents: 'auto' },
+            [`&:not(.${Header.expandClassName}) a`]: {
+              gap: 0,
+              '&>p': {
+                width: 0,
+                overflow: 'hidden',
+                interpolateSize: 'allow-keywords',
+              },
+            },
+          }}
           onClick={(event) => {
             const anchorTarget = event.target instanceof HTMLAnchorElement && event.target;
             if (!anchorTarget) return;
-
-            console.log('🚀 ~ onClick.aside:', event.target, anchorTarget.getBoundingClientRect());
           }}
         >
           <span sx={{ display: 'flex', flexDirection: 'column', gap: 'inherit' }}>
@@ -98,17 +72,16 @@ export function Layout({ children }: PropsWithChildren) {
         </nav>
 
         <div
-          sx={{
-            position: 'absolute',
+          sx={(theme) => ({
+            position: `absolute`,
             inset: 0,
-            zIndex: 1,
-            color: 'background.paper',
+            zIndex: 1_000_000,
             outline: 8,
-            outlineColor: 'currentcolor',
-            boxShadow: 'inset 4px 4px 20px rgb(0,0,0)',
+            outlineColor: `background.paper`,
+            boxShadow: `inset 4px 4px 20px rgb(0,0,0)`,
             borderRadius: 1,
-            pointerEvents: 'none',
-          }}
+            pointerEvents: `none`,
+          })}
         />
       </span>
     </>

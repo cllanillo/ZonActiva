@@ -10,7 +10,7 @@ import { theme } from '⚙️';
 LicenseInfo.setLicenseKey('954aebe364589d218a24faff1674daccTz05MDkxOCxFPTE3NDc4Mzg1OTMwMDAsUz1wcm8sTE09c3Vic2NyaXB0aW9uLEtWPTI=');
 
 export const Providers = (props: PropsWithChildren) => (
-  <Auth0Provider domain="dev-golaqzz6py118e6i.us.auth0.com" clientId="5qwv0vgKLD35wNn4nD892yThWkwA8UQ0" authorizationParams={{ redirect_uri: globalThis?.origin }}>
+  <Auth0Provider domain="dev-iktt0m22awa32g7s.eu.auth0.com" clientId="mNnh1thZuAG8ENbzdUw02MJ8lWSeZ6WS" authorizationParams={{ redirect_uri: globalThis?.origin }}>
     <ThemeProvider theme={theme}>
       <DefaultPropsProvider
         value={Object.entries(theme.components ?? {}).reduce(
