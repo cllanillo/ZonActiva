@@ -43,7 +43,7 @@ export function LayoutMap() {
               '&.mapboxgl-ctrl-attrib': {
                 outline: 0,
                 borderRadius: 0,
-                btlr: 8,
+                btl: '8/12',
               },
             },
             '& .mapboxgl-ctrl-logo': {

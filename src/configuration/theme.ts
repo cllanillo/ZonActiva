@@ -1,16 +1,17 @@
 import pigmentTheme from '@pigment-css/react/theme';
 import { createTheme } from "@mui/material/styles";
+import { handleBreakpoints } from '@mui/system/breakpoints';
 
 import type { BaseTextFieldProps, ButtonBaseProps, ComponentsOverrides, FilledInputProps, SxProps, Theme } from "@mui/material";
 import type { PickersDayClassKey, PickersFilledInputClassKey, PickersTextFieldClassKey } from "@mui/x-date-pickers-pro";
 
 const palette = {
-    background: { default: '#0A0A0A', paper: '#1E1E1E80' },
+    background: { default: '#0A0A0A', paper: '#1E1E1E', paperGlass: '#1E1E1E80' },
     divider: 'rgb(125 125 125)',
     primary: { main: '#8EE53F' },
     mode: 'dark',
 } as const,
-    blur = ['blur(0px)', 'blur(2px)', 'blur(4px)'] as const,
+    blur = (px: number) => `blur(calc(2*${px}px))`,
     shape = { borderRadius: '12px' } as const,
     spacing = 'var(--mui-spacing, 8px)' as const;
 
@@ -22,7 +23,7 @@ export var theme = ((theme?: Theme) => {
                 styleOverrides: {
                     root: { textTransform: 'none', },
                     outlined: {
-                        backgroundColor: `var(--mui-palette-background-paper, ${palette.background.paper})`,
+                        backgroundColor: `var(--mui-palette-background-paperGlass, ${palette.background.paperGlass})`,
                         boxShadow: '4px 4px 20px rgba(var(--mui-palette-primary-mainChannel, 142 229 63) / 0.15)',
                         backdropFilter: 'blur(4px)',
                     }
@@ -81,44 +82,42 @@ export var theme = ((theme?: Theme) => {
         typography: { fontFamily: `'Roboto Variable', sans-serif` },
         blur,
         unstable_sxConfig: {
-            backdropFilter: {
-                themeKey: 'blur',
-            },
-            btlr: {
-                cssProperty: 'borderTopLeftRadius',
-                themeKey: 'shape.borderRadius'
-            },
+            backdropFilter: { themeKey: 'blur' },
         }
     });
     Object.values(theme.palette).forEach((color) => {
         if (!color?.main) return;
 
         Object.assign(color, { glass: `${color.main}80` })
-    })
+    });
+
+    // Define all borderRadius
+    [['btl', 'borderTopLeftRadius'], ['btr', 'borderTopRightRadius'], ['bbl', 'borderBottomLeftRadius'], ['bbr', 'borderBottomRightRadius']].forEach(([alias, cssProperty]) => {
+        const style = (props: any) => {
+            const propValue = props[alias] ?? props[cssProperty];
+
+            return handleBreakpoints(props, propValue, () => ({ [cssProperty]: `calc(${propValue}*${shape.borderRadius})` }));
+        };
+
+        Object.assign(theme.unstable_sxConfig, { [alias]: { cssProperty, style }, [cssProperty]: { style } });
+    });
+
+    // Assing variables to the pigmentTheme to prevent crashes
     Object.assign(pigmentTheme, theme);
 
-    return theme;
+    return theme; // @ts-expect-error Wrong but valid initialization
 })(theme);
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
-        MuiPickersFilledInput: PickersFilledInputClassKey
-        MuiPickersTextField: PickersTextFieldClassKey
-        MuiPickersDay: PickersDayClassKey
+        MuiPickersFilledInput: PickersFilledInputClassKey;
+        MuiPickersTextField: PickersTextFieldClassKey;
+        MuiPickersDay: PickersDayClassKey;
     }
     interface Components {
-        MuiPickersTextField: {
-            defaultProps?: Partial<BaseTextFieldProps>
-            styleOverrides?: ComponentsOverrides<Theme>['MuiPickersTextField']
-        }
-        MuiPickersFilledInput: {
-            defaultProps?: Partial<FilledInputProps>
-            styleOverrides?: ComponentsOverrides<Theme>['MuiPickersFilledInput']
-        }
-        MuiPickersDay: {
-            defaultProps?: Partial<ButtonBaseProps>
-            styleOverrides?: ComponentsOverrides<Theme>['MuiPickersDay']
-        }
+        MuiPickersTextField: { defaultProps?: Partial<BaseTextFieldProps>; styleOverrides?: ComponentsOverrides<Theme>['MuiPickersTextField']; }
+        MuiPickersFilledInput: { defaultProps?: Partial<FilledInputProps>; styleOverrides?: ComponentsOverrides<Theme>['MuiPickersFilledInput']; }
+        MuiPickersDay: { defaultProps?: Partial<ButtonBaseProps>; styleOverrides?: ComponentsOverrides<Theme>['MuiPickersDay']; }
     }
 
     interface PaletteColor {
@@ -137,6 +136,75 @@ declare module '@mui/material/styles' {
     interface ThemeOptions {
         blur: typeof blur;
         shape: typeof shape;
+    }
+
+    interface TypeBackground {
+        paperGlass: string;
+    }
+}
+
+declare module '@mui/system' {
+    interface AliasesCSSProperties {
+        /**
+        * The **`border-top-left-radius`** CSS property rounds the top-left corner of an element by specifying the radius (or the radius of the semi-major and semi-minor axes) of the ellipse defining the curvature of the corner.
+        *
+        * **Syntax**: `<length-percentage>{1,2}`
+        *
+        * **Initial value**: `0`
+        *
+        * | Chrome  | Firefox | Safari  |  Edge  |  IE   |
+        * | :-----: | :-----: | :-----: | :----: | :---: |
+        * |  **4**  |  **4**  |  **5**  | **12** | **9** |
+        * | 1 _-x-_ |         | 3 _-x-_ |        |       |
+        *
+        * @see https://developer.mozilla.org/docs/Web/CSS/border-top-left-radius
+        */
+        btl?: number;
+        /**
+        * The **`border-top-right-radius`** CSS property rounds the top-right corner of an element by specifying the radius (or the radius of the semi-major and semi-minor axes) of the ellipse defining the curvature of the corner.
+        *
+        * **Syntax**: `<length-percentage>{1,2}`
+        *
+        * **Initial value**: `0`
+        *
+        * | Chrome  | Firefox | Safari  |  Edge  |  IE   |
+        * | :-----: | :-----: | :-----: | :----: | :---: |
+        * |  **4**  |  **4**  |  **5**  | **12** | **9** |
+        * | 1 _-x-_ |         | 3 _-x-_ |        |       |
+        *
+        * @see https://developer.mozilla.org/docs/Web/CSS/border-top-right-radius
+        */
+        btr?: number;
+        /**
+        * The **`border-bottom-left-radius`** CSS property rounds the bottom-left corner of an element by specifying the radius (or the radius of the semi-major and semi-minor axes) of the ellipse defining the curvature of the corner.
+        *
+        * **Syntax**: `<length-percentage>{1,2}`
+        *
+        * **Initial value**: `0`
+        *
+        * | Chrome  | Firefox | Safari  |  Edge  |  IE   |
+        * | :-----: | :-----: | :-----: | :----: | :---: |
+        * |  **4**  |  **4**  |  **5**  | **12** | **9** |
+        * | 1 _-x-_ |         | 3 _-x-_ |        |       |
+        *
+        * @see https://developer.mozilla.org/docs/Web/CSS/border-bottom-left-radius
+        */
+        bbl?: number;
+        /**
+        * The **`border-bottom-right-radius`** CSS property rounds the bottom-right corner of an element by specifying the radius (or the radius of the semi-major and semi-minor axes) of the ellipse defining the curvature of the corner.
+        *
+        * **Syntax**: `<length-percentage>{1,2}`
+        *
+        * **Initial value**: `0`
+        *
+        * | Chrome  | Firefox | Safari  |  Edge  |  IE   |
+        * | :-----: | :-----: | :-----: | :----: | :---: |
+        * |  **4**  |  **4**  |  **5**  | **12** | **9** |
+        * | 1 _-x-_ |         | 3 _-x-_ |        |       |
+        *
+        * @see https://developer.mozilla.org/docs/Web/CSS/border-bottom-right-radius
+        */
+        bbr?: number;
     }
 }
 
