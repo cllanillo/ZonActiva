@@ -9,9 +9,7 @@ import { theme } from './src/configuration/theme';
 const pigmentConfig: PigmentOptions = {
     transformLibraries: [
         '@mui/material',
-        // '@mui/x-date-pickers-pro'
     ],
-    // exclude:[/dayjs.*/i],
     theme,
 };
 
@@ -23,7 +21,8 @@ export default defineConfig({
         ...(!!process.env.TAURI_ENV_DEBUG && { minify: false, sourcemap: true })
     },
     clearScreen: false,
-    envPrefix: ['VITE_', 'TAURI_ENV_'],
+    envPrefix: ['VITE_', 'TAURI_ENV_*'],
+    optimizeDeps: { include: ['@emotion/cache', '@mui/material'] },
     server: {
         port: 3000,
         strictPort: true,

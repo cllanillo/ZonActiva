@@ -1,3 +1,3 @@
-package ZonActiva
+package zonactiva
 
 class MainActivity : TauriActivity()
