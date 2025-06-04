@@ -1,5 +1,6 @@
-import MuiTextField, { type FilledTextFieldProps } from '@mui/material/TextField';
+import { debounce, TextField as MuiTextField, type FilledTextFieldProps } from '@mui/material';
 import { useField } from 'formik';
+import { useMemo } from 'react';
 
 interface FormikTextProps extends Omit<FilledTextFieldProps, 'variant'> {
   name: string;
@@ -8,5 +9,7 @@ interface FormikTextProps extends Omit<FilledTextFieldProps, 'variant'> {
 export function FormikText({ name, ...props }: FormikTextProps) {
   const [input, meta, helper] = useField<string>(name);
 
-  return <MuiTextField key={name} name={name} defaultValue={meta.initialValue} {...props} onChange={input.onChange} onBlur={input.onBlur} />;
+  const handleChange = useMemo(() => debounce(input.onChange, 250), []);
+
+  return <MuiTextField key={name} name={name} defaultValue={meta.initialValue} {...props} onChange={handleChange} onBlur={input.onBlur} />;
 }

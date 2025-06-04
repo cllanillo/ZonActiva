@@ -1,4 +1,4 @@
-import Button, { ButtonProps } from '@mui/material/Button';
+import { Button, type ButtonProps } from '@mui/material';
 import { useFormikContext } from 'formik';
 import { useCallback, useRef } from 'react';
 

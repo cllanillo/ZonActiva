@@ -1,16 +1,13 @@
-import MuiTextField, { type FilledTextFieldProps } from '@mui/material/TextField';
-import { DateRangePicker, DateRangePickerProps } from '@mui/x-date-pickers-pro/DateRangePicker';
-import type { Dayjs } from 'dayjs';
+import { DateRangePicker, type DateRangePickerProps } from '@mui/x-date-pickers-pro/DateRangePicker';
 import { useField } from 'formik';
-import { useCallback, useEffect, useMemo } from 'react';
-import { object } from 'zod';
+import { useCallback, useMemo } from 'react';
 
 interface FormikDateRangeProps extends Omit<DateRangePickerProps, 'onChange'> {
   name: string;
 }
 
 export function FormikDateRange({ name, ...props }: FormikDateRangeProps) {
-  const [input, meta, helper] = useField<DateRangePickerProps['defaultValue']>(name);
+  const [input, meta, helper] = useField<DateRangePickerProps['value']>(name);
   const slotProps = useMemo(() => {
     const aux = { field: { onBlur: input.onBlur } };
 
@@ -21,7 +18,7 @@ export function FormikDateRange({ name, ...props }: FormikDateRangeProps) {
     return { ...props.slotProps };
   }, [props.slotProps, input.onBlur]);
 
-  const handleChange: DateRangePickerProps['onChange'] = useCallback(
+  const handleChange: Required<DateRangePickerProps>['onChange'] = useCallback(
     (value) => {
       helper.setValue(value);
     },

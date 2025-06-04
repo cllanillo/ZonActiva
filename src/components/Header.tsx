@@ -1,9 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import MenuOpenIcon from '@mui/icons-material/MenuOpenRounded';
 import MenuIcon from '@mui/icons-material/MenuRounded';
-import Avatar from '@mui/material/Avatar';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import { Avatar, TextField, Typography } from '@mui/material';
 import { type RefObject, useReducer } from 'react';
 
 interface HeaderProps {
@@ -21,7 +19,8 @@ export function Header({ expandableRefs }: HeaderProps) {
     return true;
   }, false);
 
-  const { loginWithPopup } = useAuth0();
+  const { loginWithPopup, user } = useAuth0();
+  console.log('🚀 ~ Header ~ user:', user);
 
   return (
     <header sx={{ width: 1, px: 2, py: 1.5, display: 'flex', justifyContent: 'space-between', backdropFilter: 'blur(2px)', position: 'sticky', top: 0, gap: 1.5 }}>

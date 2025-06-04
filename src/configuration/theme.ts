@@ -1,5 +1,5 @@
 import pigmentTheme from '@pigment-css/react/theme';
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from "@mui/material";
 import { handleBreakpoints } from '@mui/system/breakpoints';
 
 import type { BaseTextFieldProps, ButtonBaseProps, ComponentsOverrides, FilledInputProps, SxProps, Theme } from "@mui/material";

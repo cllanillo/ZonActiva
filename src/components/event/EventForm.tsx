@@ -1,4 +1,4 @@
-import Typography from '@mui/material/Typography';
+import { Typography } from '@mui/material';
 import { Formik } from 'formik';
 import { useMemo } from 'react';
 import * as Yup from 'yup';

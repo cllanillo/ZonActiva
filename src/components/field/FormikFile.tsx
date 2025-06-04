@@ -1,13 +1,16 @@
+import ClearIcon from '@mui/icons-material/Clear';
+import { ButtonBase, IconButton } from '@mui/material';
+import { useField } from 'formik';
 import { type ChangeEvent, useCallback, useEffect } from 'react';
 import type { FormikInputProps } from './FormikInputTypes';
-import ButtonBase from '@mui/material/ButtonBase';
-import { useField } from 'formik';
 
 export function FormikFile({ name }: FormikInputProps) {
-  const [input, meta, helper] = useField<File>(name);
+  const [input, meta, helper] = useField<File | null | undefined>(name);
+  console.log('🚀 ~ FormikFile ~ input:', input);
 
   const handleChange = useCallback(
     (event: DragEvent | ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault();
       const selectFiles = Array.from((event instanceof DragEvent ? event.dataTransfer : event.currentTarget)?.files ?? []);
       if (!selectFiles?.[0]) return;
 
@@ -16,21 +19,28 @@ export function FormikFile({ name }: FormikInputProps) {
     [helper.setValue],
   );
   useEffect(() => {
-    // const handleDrop = (event: DragEvent) => {
-    //   event.preventDefault();
-    //   event.dataTransfer && event.type === 'drop' && handleChange(event);
-    // };
-
     window.addEventListener('drop', handleChange);
-    // window.addEventListener('dragover', handleDrop);
     return () => {
       window.removeEventListener('drop', handleChange);
-    //   window.removeEventListener('dragover', handleDrop);
     };
-  }, []);
+  }, [handleChange]);
 
   return (
-    <ButtonBase focusRipple sx={{ border: 1, borderStyle: 'dashed', flexGrow: 1 }}>
+    <ButtonBase
+      focusRipple
+      sx={[
+        {
+          //   border: 1,
+          //   borderStyle: 'dashed',
+          boxShadow: 'inset 0 0 20px rgb(0,0,0)',
+          borderRadius: 1,
+          flexGrow: 1,
+          overflow: 'hidden',
+          '&>img': { p: 0.5, borderRadius: 1, maxWidth: '55vw', maxHeight: '25svh' },
+        },
+        !!input.value && { maxWidth: 'fit-content', maxHeight: 'fit-content' },
+      ]}
+    >
       <input
         name={name}
         type="file"
@@ -44,6 +54,20 @@ export function FormikFile({ name }: FormikInputProps) {
         onChange={handleChange}
         sx={{ opacity: 0, position: 'absolute', inset: 0 }}
       />
+      {input.value && <img src={URL.createObjectURL(input.value)} />}
+
+      {input.value && (
+        <IconButton
+          sx={{ position: 'absolute', bottom: 0, right: 0 }}
+          onMouseDown={(event) => event.stopPropagation()}
+          onClick={(event) => {
+            event.stopPropagation();
+            helper.setValue(null);
+          }}
+        >
+          <ClearIcon />
+        </IconButton>
+      )}
     </ButtonBase>
   );
 }

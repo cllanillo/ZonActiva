@@ -1,8 +1,8 @@
-import ButtonBase from '@mui/material/ButtonBase';
+import { ButtonBase } from '@mui/material';
 import { createLink, type CreateLinkProps } from '@tanstack/react-router';
-import { type FC } from 'react';
+import { useMemo, type FC } from 'react';
 
-const NavLinkBase = createLink(ButtonBase);
+// const NavLinkBase = createLink(ButtonBase);
 
 interface NavLinkProps extends CreateLinkProps {
   icon: FC;
@@ -10,6 +10,8 @@ interface NavLinkProps extends CreateLinkProps {
 }
 
 export const NavLink = ({ icon: Icon, label, ...props }: NavLinkProps) => {
+  const NavLinkBase = useMemo(() => createLink(ButtonBase), []);
+
   return (
     <NavLinkBase
       preload="intent"

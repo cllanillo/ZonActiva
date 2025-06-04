@@ -72,13 +72,13 @@ export function Layout({ children }: PropsWithChildren) {
         </nav>
 
         <div
-          sx={(theme) => ({
+          sx={() => ({
             position: `absolute`,
             inset: 0,
             zIndex: 1_000_000,
             outline: 8,
             outlineColor: `background.paper`,
-            boxShadow: `inset 4px 4px 20px rgb(0,0,0)`,
+            boxShadow: `inset 4px 4px 20px rgb(0,0,0,0.5)`,
             borderRadius: 1,
             pointerEvents: `none`,
           })}

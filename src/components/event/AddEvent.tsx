@@ -1,10 +1,8 @@
-import Button from '@mui/material/Button';
-import Fade from '@mui/material/Fade';
-import Portal from '@mui/material/Portal';
-import { lazy, Suspense, useEffect, useMemo, useReducer, useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
+import { Button, Fade } from '@mui/material';
+import { lazy, Suspense, useReducer } from 'react';
 
 const AddIcon = lazy(() => import('@mui/icons-material/Add'));
-const CloseIcon = lazy(() => import('@mui/icons-material/Close'));
 const EventForm = lazy(() => import('./EventForm'));
 
 export function AddEvent() {
@@ -21,22 +19,27 @@ export function AddEvent() {
       </Fade>
 
       <Button
-        startIcon={<Suspense fallback={null}>{open ? <CloseIcon /> : <AddIcon />}</Suspense>}
-        sx={{
-          bgcolor: 'background.paperGlass',
-          zIndex: 110,
-          pointerEvents: 'all',
-          backdropFilter: 1,
-          width: 136,
-          minWidth: 'max-content',
-          mt: 2,
-          mr: 'calc(16 * 2px + 46px)',
-          position: 'absolute',
-          right: 0,
-        }}
+        key={Number(open)}
+        startIcon={!open && <AddIcon />}
+        sx={[
+          {
+            bgcolor: 'background.paperGlass',
+            zIndex: 110,
+            pointerEvents: 'all',
+            backdropFilter: 1,
+            minWidth: 'max-content',
+            maxHeight: 40,
+            mt: 2,
+            mr: 'calc(16 * 2px + 46px)',
+            position: 'absolute',
+            right: 0,
+            py: 7 / 8,
+          },
+          open && { mr: 2, px: 1.25 },
+        ]}
         onClick={updateOpen}
       >
-        {open ? 'Close' : 'Create Event'}
+        {open ? <CloseIcon /> : 'Create Event'}
       </Button>
     </>
   );
