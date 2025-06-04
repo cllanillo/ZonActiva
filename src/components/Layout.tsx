@@ -2,7 +2,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import MovieIcon from '@mui/icons-material/MovieOutlined';
 import PlaceIcon from '@mui/icons-material/Place';
 import { createRef, useMemo, type PropsWithChildren, type RefObject } from 'react';
-import { NavLink } from '🪟/NavLink';
+import { HeaderNavLink } from '🪟/navigation';
 import { Header } from './Header';
 
 export function Layout({ children }: PropsWithChildren) {
@@ -63,11 +63,11 @@ export function Layout({ children }: PropsWithChildren) {
           }}
         >
           <span sx={{ display: 'flex', flexDirection: 'column', gap: 'inherit' }}>
-            <NavLink to="/" icon={HomeIcon} label="Home" />
+            <HeaderNavLink to="/" icon={HomeIcon} label="Home" />
 
-            <NavLink to="/map" icon={PlaceIcon} label="Map" />
+            <HeaderNavLink to="/map" icon={PlaceIcon} label="Map" />
 
-            <NavLink to="/stories" icon={MovieIcon} label="Stories" />
+            <HeaderNavLink to="/stories" icon={MovieIcon} label="Stories" />
           </span>
         </nav>
 

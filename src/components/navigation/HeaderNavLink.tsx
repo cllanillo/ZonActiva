@@ -1,17 +1,13 @@
-import { ButtonBase } from '@mui/material';
-import { createLink, type CreateLinkProps } from '@tanstack/react-router';
-import { useMemo, type FC } from 'react';
+import { type CreateLinkProps } from '@tanstack/react-router';
+import { type FC } from 'react';
+import { NavLinkBase } from './NavLinkBase';
 
-// const NavLinkBase = createLink(ButtonBase);
-
-interface NavLinkProps extends CreateLinkProps {
+export interface HeaderNavLinkProps extends CreateLinkProps {
   icon: FC;
   label?: string;
 }
 
-export const NavLink = ({ icon: Icon, label, ...props }: NavLinkProps) => {
-  const NavLinkBase = useMemo(() => createLink(ButtonBase), []);
-
+export const HeaderNavLink = ({ icon: Icon, label, ...props }: HeaderNavLinkProps) => {
   return (
     <NavLinkBase
       preload="intent"
