@@ -19,6 +19,7 @@ import { Route as MapImport } from './routes/map'
 
 const StoriesLazyImport = createFileRoute('/stories')()
 const IndexLazyImport = createFileRoute('/')()
+const StoriesStoryIdLazyImport = createFileRoute('/stories/$storyId')()
 
 // Create/Update Routes
 
@@ -39,6 +40,14 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const StoriesStoryIdLazyRoute = StoriesStoryIdLazyImport.update({
+  id: '/$storyId',
+  path: '/$storyId',
+  getParentRoute: () => StoriesLazyRoute,
+} as any).lazy(() =>
+  import('./routes/stories/$storyId.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -65,49 +74,71 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoriesLazyImport
       parentRoute: typeof rootRoute
     }
+    '/stories/$storyId': {
+      id: '/stories/$storyId'
+      path: '/$storyId'
+      fullPath: '/stories/$storyId'
+      preLoaderRoute: typeof StoriesStoryIdLazyImport
+      parentRoute: typeof StoriesLazyImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface StoriesLazyRouteChildren {
+  StoriesStoryIdLazyRoute: typeof StoriesStoryIdLazyRoute
+}
+
+const StoriesLazyRouteChildren: StoriesLazyRouteChildren = {
+  StoriesStoryIdLazyRoute: StoriesStoryIdLazyRoute,
+}
+
+const StoriesLazyRouteWithChildren = StoriesLazyRoute._addFileChildren(
+  StoriesLazyRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/map': typeof MapRoute
-  '/stories': typeof StoriesLazyRoute
+  '/stories': typeof StoriesLazyRouteWithChildren
+  '/stories/$storyId': typeof StoriesStoryIdLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/map': typeof MapRoute
-  '/stories': typeof StoriesLazyRoute
+  '/stories': typeof StoriesLazyRouteWithChildren
+  '/stories/$storyId': typeof StoriesStoryIdLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
   '/map': typeof MapRoute
-  '/stories': typeof StoriesLazyRoute
+  '/stories': typeof StoriesLazyRouteWithChildren
+  '/stories/$storyId': typeof StoriesStoryIdLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/map' | '/stories'
+  fullPaths: '/' | '/map' | '/stories' | '/stories/$storyId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/map' | '/stories'
-  id: '__root__' | '/' | '/map' | '/stories'
+  to: '/' | '/map' | '/stories' | '/stories/$storyId'
+  id: '__root__' | '/' | '/map' | '/stories' | '/stories/$storyId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   MapRoute: typeof MapRoute
-  StoriesLazyRoute: typeof StoriesLazyRoute
+  StoriesLazyRoute: typeof StoriesLazyRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   MapRoute: MapRoute,
-  StoriesLazyRoute: StoriesLazyRoute,
+  StoriesLazyRoute: StoriesLazyRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -132,7 +163,14 @@ export const routeTree = rootRoute
       "filePath": "map.tsx"
     },
     "/stories": {
-      "filePath": "stories.lazy.tsx"
+      "filePath": "stories.lazy.tsx",
+      "children": [
+        "/stories/$storyId"
+      ]
+    },
+    "/stories/$storyId": {
+      "filePath": "stories/$storyId.lazy.tsx",
+      "parent": "/stories"
     }
   }
 }

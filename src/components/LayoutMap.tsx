@@ -1,6 +1,8 @@
 import { Suspense } from 'react';
 import { Map } from '@vis.gl/react-mapbox';
 import { GeolocateControl, FullscreenControl, NavigationControl, ScaleControl } from '@vis.gl/react-mapbox';
+import { getEvents } from '~/api/events';
+import CustomMarker from './map/CustomMarker';
 
 export function LayoutMap() {
   return (
@@ -70,6 +72,10 @@ export function LayoutMap() {
             <NavigationControl position="top-right" />
             <ScaleControl />
           </Suspense>
+
+          {getEvents().map((event) => (
+            <CustomMarker event={event} />
+          ))}
         </Map>
       </div>
     </Suspense>
