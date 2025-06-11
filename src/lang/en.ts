@@ -1,5 +1,6 @@
 export const en = {
     home: 'Home',
     map: 'Map',
-    stories: 'Explorer'
+    stories: 'Explorer',
+    download: 'Download'
 } as const

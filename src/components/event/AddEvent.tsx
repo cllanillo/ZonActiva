@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Button, Fade } from '@mui/material';
+import { Button, CircularProgress, Fade } from '@mui/material';
 import { lazy, Suspense, useReducer } from 'react';
 
 const AddIcon = lazy(() => import('@mui/icons-material/Add'));
@@ -12,7 +12,7 @@ export function AddEvent() {
     <>
       <Fade in={open} mountOnEnter unmountOnExit sx={{ position: 'absolute', zIndex: 10, inset: 0, backdropFilter: 4, bgcolor: 'background.paperGlass' }}>
         <span>
-          <Suspense fallback={null}>
+          <Suspense fallback={<CircularProgress />}>
             <EventForm />
           </Suspense>
         </span>

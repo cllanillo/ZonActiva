@@ -1,9 +1,9 @@
-import HomeIcon from '@mui/icons-material/Home';
 import MovieIcon from '@mui/icons-material/MovieOutlined';
 import PlaceIcon from '@mui/icons-material/Place';
 import { createRef, useMemo, type PropsWithChildren, type RefObject } from 'react';
 import { HeaderNavLink } from '🪟/navigation';
 import { Header } from './Header';
+import { i18n } from '~/lang';
 
 export function Layout({ children }: PropsWithChildren) {
   const expandableRefs = useMemo(() => [createRef()] as Array<RefObject<HTMLElement>>, []);
@@ -63,11 +63,9 @@ export function Layout({ children }: PropsWithChildren) {
           }}
         >
           <span sx={{ display: 'flex', flexDirection: 'column', gap: 'inherit' }}>
-            <HeaderNavLink to="/" icon={HomeIcon} label="Home" />
+            <HeaderNavLink to="/" icon={PlaceIcon} label={i18n.map} />
 
-            <HeaderNavLink to="/map" icon={PlaceIcon} label="Map" />
-
-            <HeaderNavLink to="/stories" icon={MovieIcon} label="Stories" />
+            <HeaderNavLink to="/stories" icon={MovieIcon} label={i18n.stories} />
           </span>
         </nav>
 

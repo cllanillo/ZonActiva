@@ -1,6 +1,6 @@
-import { Marker } from '@vis.gl/react-mapbox';
 import PlaceIcon from '@mui/icons-material/Place';
-import { Box, SvgIconProps } from '@mui/material';
+import { Box } from '@mui/material';
+import { Marker } from '@vis.gl/react-mapbox';
 import { lazy, LazyExoticComponent, Suspense, useMemo } from 'react';
 import { EventType, type EventDto } from '~/api/events';
 
@@ -17,38 +17,37 @@ const LazyIcons: Record<EventType, LazyExoticComponent<typeof PlaceIcon>> = {
 };
 
 export default function CustomMarker({ event, onClick, onHover }: CustomMarkerProps) {
-  const icon = useMemo(() => {
-    if (event.iconUrl) return <img src={event.iconUrl} />;
-
-    const defaultIcon = <PlaceIcon sx={{ color: 'primary.main' }} />,
-      LazyEventIcon = LazyIcons[event.type];
-    return LazyEventIcon ? (
-      <Suspense fallback={defaultIcon}>
-        <LazyEventIcon sx={{ color: 'primary.main' }} />
-      </Suspense>
-    ) : (
-      defaultIcon
-    );
-  }, []);
+  const EventIcon = useMemo(() => LazyIcons[event.type], [event]);
 
   return (
     <Marker latitude={event.latitude} longitude={event.longitude}>
       <Box
         onClick={onClick}
         onMouseEnter={onHover}
-        sx={{
-          backgroundColor: 'white',
-          borderRadius: '50%',
-          boxShadow: 2,
-          p: 0.5,
+        sx={(theme) => ({
+          color: 'primary.main',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'pointer',
-          transform: 'translate(-50%, -50%)',
-        }}
+          '&>svg:first-of-type': {
+            color: 'background.paper',
+            fontSize: '4rem',
+            filter: `drop-shadow(0px 0px 4px rgb(${theme.palette.primary.mainChannel}/0.5))`,
+          },
+          '&>svg:nth-of-type(2)': {
+            position: 'absolute',
+            bgcolor: 'background.paper',
+            top: 0,
+            mt: 1.5,
+          },
+        })}
       >
-        {icon}
+        <PlaceIcon />
+
+        <Suspense fallback={null}>
+          <EventIcon />
+        </Suspense>
       </Box>
     </Marker>
   );

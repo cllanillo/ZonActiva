@@ -1,5 +1,6 @@
 export const es = {
     home: 'Inicio',
     map: 'Mapa',
-    stories: 'Explorer'
+    stories: 'Explorer',
+    download: 'Descargar'
 } as const
