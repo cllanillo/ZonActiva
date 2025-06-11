@@ -12,11 +12,11 @@ builder.Services.AddSwaggerGen(sgo =>
     sgo.SwaggerDoc("v1", new OpenApiInfo { Title = "ZonActiva API", Description = "Connecting with your arounds", Version = "v1" });
 });
 
-Console.Write(builder.Configuration.AsEnumerable());
+// Console.Write(builder.Configuration.AsEnumerable());
 
 builder.Services.AddSingleton(async sp =>
 {
-    var supabase = new Supabase.Client(builder.Configuration["Supabase:Url"], builder.Configuration["Supabase:Key"]);
+    var supabase = new Supabase.Client("https://tlerhfbhwgegtdhbhtlf.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsZXJoZmJod2dlZ3RkaGJodGxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYwOTc4NTQsImV4cCI6MjA2MTY3Mzg1NH0.407jBA_JUJIp4eq97iRLSruVUPdh4vHucWDsDnzFl_8");
     await supabase.InitializeAsync();
 
     var channel = supabase.Realtime.Channel("realtime", "public", "*");
@@ -25,7 +25,7 @@ builder.Services.AddSingleton(async sp =>
         Debug.WriteLine(change.Event);
         Debug.WriteLine(change.Payload);
     });
-    channel.Subscribe();
+    await channel.Subscribe();
 
     return supabase;
 });
