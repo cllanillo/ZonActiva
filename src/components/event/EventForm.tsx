@@ -2,7 +2,8 @@ import { Typography } from '@mui/material';
 import { Formik } from 'formik';
 import { useMemo } from 'react';
 import * as Yup from 'yup';
-import { FormikDateRange, FormikFile, FormikSubmit, FormikText } from '🪟/field';
+import { EventAddDto, useCreateEvent } from '~/api/events';
+import { FormikDateRange, FormikFile, FormikMapPoint, FormikSubmit, FormikText } from '🪟/field';
 
 export default function EventForm() {
   const yupSchema = useMemo(
@@ -14,16 +15,21 @@ export default function EventForm() {
         date: Yup.date().required('Date is required'),
         category: Yup.string().required('Category is required'),
         image: Yup.object().required('Image is required'),
+        point: Yup.array().min(2, 'Select a location on the map').required('Select a location on the map'),
       }),
     [],
   );
+  const createEvent = useCreateEvent();
 
   return (
     <Formik
       //   validationSchema={yupSchema}
-      initialValues={{}}
+      initialValues={{} as EventAddDto}
       onSubmit={async (values) => {
+        const [start_time, end_time] = values.date;
         console.log('🚀 ~ onSubmit:', values);
+
+        createEvent.mutate({ name: values.name, start_time, end_time, description: values.description, location: [values.point.lat, values.point.lng] });
         return null;
       }}
       children={<InnerForm />}
@@ -32,7 +38,6 @@ export default function EventForm() {
 }
 
 function InnerForm() {
-  //   console.log('🚀 ~ InnerForm ~ p:', p);
   return (
     <form
       sx={{
@@ -41,7 +46,18 @@ function InnerForm() {
         display: 'flex',
         flexDirection: 'column',
         gap: 5,
-        '&>div': { display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2, '&>div': { display: 'flex', flexDirection: 'column', flexGrow: 1 } },
+        '&>div': {
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: 2,
+          '&:last-of-type': { flexGrow: 1, alignItems: 'end', '&>div': { height: 1 } },
+          '&>div': {
+            display: 'flex',
+            flexDirection: 'column',
+            flexGrow: 1,
+          },
+        },
       }}
     >
       {/* Name, 📅, Category */}
@@ -77,6 +93,7 @@ function InnerForm() {
       <div>
         <div>
           <Typography variant="subtitle1">Location</Typography>
+          <FormikMapPoint name="point" />
           {/* <Field name="name" component={TextField} /> */}
         </div>
 

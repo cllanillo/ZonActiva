@@ -1,8 +1,8 @@
 import { Box, Card, Typography } from '@mui/material';
-import type { EventDto } from '~/api/events';
+import type { EventRowDto } from '~/api/events';
 
 interface EventPopupProps {
-  event: EventDto;
+  event: EventRowDto;
   onClick?: () => void;
 }
 

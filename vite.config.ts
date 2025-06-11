@@ -10,7 +10,7 @@ const pigmentConfig: PigmentOptions = {
   transformLibraries: ['@mui/material'],
   theme,
 };
-const defaultPort = 5000;
+const defaultPort = 3000;
 const tauriHmr: HmrOptions = { protocol: 'ws', host: process.env.TAURI_DEV_HOST, port: defaultPort - 1 };
 
 export default defineConfig({

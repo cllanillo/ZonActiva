@@ -1,10 +1,13 @@
+import { GeolocateControl, Map, NavigationControl, ScaleControl } from '@vis.gl/react-mapbox';
 import { Suspense } from 'react';
-import { Map } from '@vis.gl/react-mapbox';
-import { GeolocateControl, FullscreenControl, NavigationControl, ScaleControl } from '@vis.gl/react-mapbox';
-import { getEvents } from '~/api/events';
+import { useGetEvents } from '~/api/events';
+import { useStoreMapBounds } from '~/api/map';
 import CustomMarker from './map/CustomMarker';
 
 export function LayoutMap() {
+  const eventsQuery = useGetEvents();
+  const [initialMapBounds, updateMapBounds] = useStoreMapBounds();
+
   return (
     <Suspense fallback={null}>
       <div
@@ -55,16 +58,13 @@ export function LayoutMap() {
         })}
       >
         <Map
-          initialViewState={{
-            latitude: 43.314546,
-            longitude: -3.856231,
-            zoom: 13,
-            bearing: 0,
-            pitch: 0,
-          }}
+          initialViewState={initialMapBounds}
           mapStyle="mapbox://styles/llanillo-jr/cmad5xjsw00pb01s437cgexef"
           mapboxAccessToken={import.meta.env.VITE_TOKEN_MAPBOX}
           language="es"
+          onMoveEnd={(event) => {
+            updateMapBounds(event.viewState);
+          }}
         >
           <Suspense fallback={null}>
             <GeolocateControl position="top-right" />
@@ -73,9 +73,7 @@ export function LayoutMap() {
             <ScaleControl />
           </Suspense>
 
-          {getEvents().map((event) => (
-            <CustomMarker event={event} />
-          ))}
+          {eventsQuery.data?.data?.map((event) => <CustomMarker event={event} />)}
         </Map>
       </div>
     </Suspense>
