@@ -5,8 +5,7 @@ import { type ChangeEvent, useCallback, useEffect } from 'react';
 import type { FormikInputProps } from './FormikInputTypes';
 
 export function FormikFile({ name }: FormikInputProps) {
-  const [input, meta, helper] = useField<File | null | undefined>(name);
-  console.log('🚀 ~ FormikFile ~ input:', input);
+  const [input, , helper] = useField<File | null | undefined>(name);
 
   const handleChange = useCallback(
     (event: DragEvent | ChangeEvent<HTMLInputElement>) => {
@@ -30,8 +29,6 @@ export function FormikFile({ name }: FormikInputProps) {
       focusRipple
       sx={[
         {
-          //   border: 1,
-          //   borderStyle: 'dashed',
           boxShadow: 'inset 0 0 20px rgb(0,0,0)',
           borderRadius: 1,
           flexGrow: 1,
@@ -58,7 +55,7 @@ export function FormikFile({ name }: FormikInputProps) {
 
       {input.value && (
         <IconButton
-          sx={{ position: 'absolute', bottom: 0, right: 0 }}
+          sx={(theme) => ({ position: 'absolute', bottom: 0, right: 0, bgcolor: 'background.paperGlass', '--IconButton-hoverBg': theme.palette.background.paperGlass })}
           onMouseDown={(event) => event.stopPropagation()}
           onClick={(event) => {
             event.stopPropagation();

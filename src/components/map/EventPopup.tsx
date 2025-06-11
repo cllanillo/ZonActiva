@@ -6,7 +6,7 @@ interface EventPopupProps {
   onClick?: () => void;
 }
 
-export default function EventMapPopup({ event }: EventPopupProps) {
+export function EventPopup({ event }: EventPopupProps) {
   return (
     <Card
       sx={{
@@ -21,7 +21,7 @@ export default function EventMapPopup({ event }: EventPopupProps) {
         bgcolor: 'background.paper',
       }}
     >
-      <img src={event.imageUrl} alt={event.name} sx={{ aspectRatio: 1 / 1, borderRadius: 1, objectFit: 'cover' }} />
+      {/* <img src={event.imageUrl} alt={event.name} sx={{ aspectRatio: 1 / 1, borderRadius: 1, objectFit: 'cover' }} /> */}
 
       <Box sx={{ p: 0, flex: 1 }}>
         <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 0.5 }}>
@@ -30,11 +30,11 @@ export default function EventMapPopup({ event }: EventPopupProps) {
         <Typography
           variant="body2"
           sx={{
-            display: '-webkit-box',
-            WebkitLineClamp: 4,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
+            // display: '-webkit-box',
+            // WebkitLineClamp: 4,
+            // WebkitBoxOrient: 'vertical',
+            // overflow: 'hidden',
+            // textOverflow: 'ellipsis',
           }}
         >
           {event.description}

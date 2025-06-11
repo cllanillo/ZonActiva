@@ -1,12 +1,13 @@
 import { GeolocateControl, Map, NavigationControl, ScaleControl } from '@vis.gl/react-mapbox';
 import { Suspense } from 'react';
-import { useGetEvents } from '~/api/events';
+import { EventRowDto, useGetNearbyEvents } from '~/api/events';
 import { useStoreMapBounds } from '~/api/map';
 import CustomMarker from './map/CustomMarker';
 
 export function LayoutMap() {
-  const eventsQuery = useGetEvents();
+  const eventsQuery = useGetNearbyEvents();
   const [initialMapBounds, updateMapBounds] = useStoreMapBounds();
+  console.log('🚀 ~ LayoutMap ~ eventsQuery:', eventsQuery.data);
 
   return (
     <Suspense fallback={null}>
@@ -73,7 +74,7 @@ export function LayoutMap() {
             <ScaleControl />
           </Suspense>
 
-          {eventsQuery.data?.data?.map((event) => <CustomMarker event={event} />)}
+          {(eventsQuery.data?.data as EventRowDto[])?.map((event: any) => <CustomMarker event={event} />)}
         </Map>
       </div>
     </Suspense>

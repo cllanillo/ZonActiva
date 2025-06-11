@@ -2,7 +2,7 @@ import { Typography } from '@mui/material';
 import { Formik } from 'formik';
 import { useMemo } from 'react';
 import * as Yup from 'yup';
-import { EventAddDto, useCreateEvent } from '~/api/events';
+import { type EventFormDto, useCreateEvent } from '~/api/events';
 import { FormikDateRange, FormikFile, FormikMapPoint, FormikSubmit, FormikText } from '🪟/field';
 
 export default function EventForm() {
@@ -12,10 +12,8 @@ export default function EventForm() {
         name: Yup.string()
           .max(25, ({ max }) => `Name must be less than ${max} charaters`)
           .required('Name is required'),
-        date: Yup.date().required('Date is required'),
-        category: Yup.string().required('Category is required'),
-        image: Yup.object().required('Image is required'),
-        point: Yup.array().min(2, 'Select a location on the map').required('Select a location on the map'),
+        date: Yup.array().required('Date is required'),
+        point: Yup.object().required('Select a location on the map'),
       }),
     [],
   );
@@ -24,14 +22,8 @@ export default function EventForm() {
   return (
     <Formik
       //   validationSchema={yupSchema}
-      initialValues={{} as EventAddDto}
-      onSubmit={async (values) => {
-        const [start_time, end_time] = values.date;
-        console.log('🚀 ~ onSubmit:', values);
-
-        createEvent.mutate({ name: values.name, start_time, end_time, description: values.description, location: [values.point.lat, values.point.lng] });
-        return null;
-      }}
+      initialValues={{} as EventFormDto}
+      onSubmit={(newEvent) => createEvent.mutateAsync(newEvent)}
       children={<InnerForm />}
     />
   );
@@ -58,10 +50,15 @@ function InnerForm() {
             flexGrow: 1,
           },
         },
+        '& #point': { minHeight: '25svh' },
       }}
     >
       {/* Name, 📅, Category */}
       <div sx={{ mt: '54px', ml: '116px' }}>
+        <div>
+          <Typography variant="subtitle1">Icon</Typography>
+          <FormikFile name="icon" />
+        </div>
         <div>
           <Typography variant="subtitle1">Name</Typography>
           <FormikText name="name" fullWidth />
@@ -70,10 +67,10 @@ function InnerForm() {
           <Typography variant="subtitle1">Date</Typography>
           <FormikDateRange name="date" slotProps={{ textField: { fullWidth: true } }} />
         </div>
-        <div>
+        {/* <div>
           <Typography variant="subtitle1">Category</Typography>
           <FormikText name="category" fullWidth />
-        </div>
+        </div> */}
       </div>
 
       {/* Imagen, Description */}
@@ -91,10 +88,9 @@ function InnerForm() {
 
       {/* Location, Save */}
       <div>
-        <div>
+        <div id="point">
           <Typography variant="subtitle1">Location</Typography>
           <FormikMapPoint name="point" />
-          {/* <Field name="name" component={TextField} /> */}
         </div>
 
         <FormikSubmit sx={{ mt: 'auto' }} />

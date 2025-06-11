@@ -1,8 +1,9 @@
 import { useAuth0 } from '@auth0/auth0-react';
+import LoginIcon from '@mui/icons-material/AccountCircleRounded';
+import LogoutIcon from '@mui/icons-material/LogoutRounded';
 import MenuOpenIcon from '@mui/icons-material/MenuOpenRounded';
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MenuIcon from '@mui/icons-material/MenuRounded';
-import { Avatar, Box, Button, Typography } from '@mui/material';
+import { Avatar, Button, Typography } from '@mui/material';
 import { type RefObject, useReducer } from 'react';
 import { i18n } from '~/lang';
 
@@ -24,21 +25,21 @@ export function Header({ expandableRefs }: HeaderProps) {
   const { loginWithPopup, logout, isAuthenticated, user } = useAuth0();
 
   return (
-    <header sx={{ width: 1, px: 2, py: 1.5, display: 'flex', justifyContent: 'space-between', backdropFilter: 'blur(2px)', position: 'sticky', top: 0, gap: 1.5 }}>
-      <Typography
-        variant="h1"
-        sx={{
-          fontSize: 40,
-          fontWeight: 600,
-          letterSpacing: 1,
-          color: 'primary.main',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1,
-        }}
-        onClick={updateExpand}
-      >
+    <header
+      sx={{
+        width: 1,
+        px: 2,
+        py: 1.5,
+        display: 'flex',
+        justifyContent: 'space-between',
+        backdropFilter: 'blur(2px)',
+        position: 'sticky',
+        top: 0,
+        gap: 1.5,
+        '&>h1': { fontSize: 40, fontWeight: 600, letterSpacing: 1, color: 'primary.main', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 1, pointerEvents: { xs: 'none', md: 'auto' } },
+      }}
+    >
+      <Typography variant="h1" onClick={updateExpand}>
         {expand ? <MenuOpenIcon /> : <MenuIcon />} ZonActiva
       </Typography>
 
@@ -71,11 +72,14 @@ export function Header({ expandableRefs }: HeaderProps) {
           <Avatar src={user.picture} title={i18n.authLogout} onClick={() => logout()} sx={{}}>
             {`${user.given_name?.[0]?.toUpperCase()} ${user.family_name?.[0]?.toUpperCase()}`}
           </Avatar>
-          <LogoutRoundedIcon />
+          <LogoutIcon />
         </span>
       ) : (
-        <Button title={`${i18n.authLogin}/${i18n.authRegister}`} onClick={() => loginWithPopup()}>
-          {i18n.authLogin}/{i18n.authRegister}
+        <Button title={`${i18n.authLogin}/${i18n.authRegister}`} onClick={() => loginWithPopup()} sx={{ px: 1, gap: 1, '&>span': { display: { xs: 'none', md: 'initial' } } }}>
+          <LoginIcon />
+          <span>
+            {i18n.authLogin}/{i18n.authRegister}
+          </span>
         </Button>
       )}
     </header>
