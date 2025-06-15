@@ -3,9 +3,11 @@ import { ButtonBase, IconButton } from '@mui/material';
 import { useField } from 'formik';
 import { type ChangeEvent, useCallback, useEffect } from 'react';
 import type { FormikInputProps } from './FormikInputTypes';
+import { getB64 } from '~/api/getB64';
 
 export function FormikFile({ name }: FormikInputProps) {
   const [input, , helper] = useField<File | null | undefined>(name);
+  console.log('🚀 ~ FormikFile ~ input:', input.value && getB64(input.value));
 
   const handleChange = useCallback(
     (event: DragEvent | ChangeEvent<HTMLInputElement>) => {

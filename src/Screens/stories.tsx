@@ -8,7 +8,7 @@ export default function ScreenStories() {
   // const heartbeat = keyframes({ from: { scale: 0.75 }, '15%': { scale: 1.5 }, to: { scale: 0.75 } });
 
   return (
-    <Stack sx={{ m: 'auto', alignItems: 'center', justifyContent: 'center', overflow: 'visible!important' }}>
+    <Stack sx={{ m: 'auto', alignItems: 'center', justifyContent: 'center', height: 1, overflow: 'auto!important' }}>
       <StoryGrid />
     </Stack>
   );

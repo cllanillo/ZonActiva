@@ -19,14 +19,7 @@ export default function EventForm() {
   );
   const createEvent = useCreateEvent();
 
-  return (
-    <Formik
-      //   validationSchema={yupSchema}
-      initialValues={{} as EventFormDto}
-      onSubmit={(newEvent) => createEvent.mutateAsync(newEvent)}
-      children={<InnerForm />}
-    />
-  );
+  return <Formik validationSchema={yupSchema} initialValues={{} as EventFormDto} onSubmit={(newEvent) => createEvent.mutateAsync(newEvent)} children={<InnerForm />} />;
 }
 
 function InnerForm() {
@@ -34,6 +27,7 @@ function InnerForm() {
     <form
       sx={{
         height: 1,
+        width: 1,
         p: 2,
         display: 'flex',
         flexDirection: 'column',

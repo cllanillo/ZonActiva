@@ -10,38 +10,29 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as MapRouteImport } from './routes/map'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as MapImport } from './routes/map'
+const StoriesLazyRouteImport = createFileRoute('/stories')()
+const IndexLazyRouteImport = createFileRoute('/')()
+const StoriesStoryIdLazyRouteImport = createFileRoute('/stories/$storyId')()
 
-// Create Virtual Routes
-
-const StoriesLazyImport = createFileRoute('/stories')()
-const IndexLazyImport = createFileRoute('/')()
-const StoriesStoryIdLazyImport = createFileRoute('/stories/$storyId')()
-
-// Create/Update Routes
-
-const StoriesLazyRoute = StoriesLazyImport.update({
+const StoriesLazyRoute = StoriesLazyRouteImport.update({
   id: '/stories',
   path: '/stories',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/stories.lazy').then((d) => d.Route))
-
-const MapRoute = MapImport.update({
+const MapRoute = MapRouteImport.update({
   id: '/map',
   path: '/map',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/map.lazy').then((d) => d.Route))
-
-const IndexLazyRoute = IndexLazyImport.update({
+const IndexLazyRoute = IndexLazyRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
-
-const StoriesStoryIdLazyRoute = StoriesStoryIdLazyImport.update({
+const StoriesStoryIdLazyRoute = StoriesStoryIdLazyRouteImport.update({
   id: '/$storyId',
   path: '/$storyId',
   getParentRoute: () => StoriesLazyRoute,
@@ -49,42 +40,71 @@ const StoriesStoryIdLazyRoute = StoriesStoryIdLazyImport.update({
   import('./routes/stories/$storyId.lazy').then((d) => d.Route),
 )
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexLazyRoute
+  '/map': typeof MapRoute
+  '/stories': typeof StoriesLazyRouteWithChildren
+  '/stories/$storyId': typeof StoriesStoryIdLazyRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexLazyRoute
+  '/map': typeof MapRoute
+  '/stories': typeof StoriesLazyRouteWithChildren
+  '/stories/$storyId': typeof StoriesStoryIdLazyRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexLazyRoute
+  '/map': typeof MapRoute
+  '/stories': typeof StoriesLazyRouteWithChildren
+  '/stories/$storyId': typeof StoriesStoryIdLazyRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/map' | '/stories' | '/stories/$storyId'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/map' | '/stories' | '/stories/$storyId'
+  id: '__root__' | '/' | '/map' | '/stories' | '/stories/$storyId'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexLazyRoute: typeof IndexLazyRoute
+  MapRoute: typeof MapRoute
+  StoriesLazyRoute: typeof StoriesLazyRouteWithChildren
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
-      parentRoute: typeof rootRoute
+    '/stories': {
+      id: '/stories'
+      path: '/stories'
+      fullPath: '/stories'
+      preLoaderRoute: typeof StoriesLazyRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/map': {
       id: '/map'
       path: '/map'
       fullPath: '/map'
-      preLoaderRoute: typeof MapImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof MapRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/stories': {
-      id: '/stories'
-      path: '/stories'
-      fullPath: '/stories'
-      preLoaderRoute: typeof StoriesLazyImport
-      parentRoute: typeof rootRoute
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/stories/$storyId': {
       id: '/stories/$storyId'
       path: '/$storyId'
       fullPath: '/stories/$storyId'
-      preLoaderRoute: typeof StoriesStoryIdLazyImport
-      parentRoute: typeof StoriesLazyImport
+      preLoaderRoute: typeof StoriesStoryIdLazyRouteImport
+      parentRoute: typeof StoriesLazyRoute
     }
   }
 }
-
-// Create and export the route tree
 
 interface StoriesLazyRouteChildren {
   StoriesStoryIdLazyRoute: typeof StoriesStoryIdLazyRoute
@@ -98,80 +118,11 @@ const StoriesLazyRouteWithChildren = StoriesLazyRoute._addFileChildren(
   StoriesLazyRouteChildren,
 )
 
-export interface FileRoutesByFullPath {
-  '/': typeof IndexLazyRoute
-  '/map': typeof MapRoute
-  '/stories': typeof StoriesLazyRouteWithChildren
-  '/stories/$storyId': typeof StoriesStoryIdLazyRoute
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexLazyRoute
-  '/map': typeof MapRoute
-  '/stories': typeof StoriesLazyRouteWithChildren
-  '/stories/$storyId': typeof StoriesStoryIdLazyRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexLazyRoute
-  '/map': typeof MapRoute
-  '/stories': typeof StoriesLazyRouteWithChildren
-  '/stories/$storyId': typeof StoriesStoryIdLazyRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/map' | '/stories' | '/stories/$storyId'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/map' | '/stories' | '/stories/$storyId'
-  id: '__root__' | '/' | '/map' | '/stories' | '/stories/$storyId'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute
-  MapRoute: typeof MapRoute
-  StoriesLazyRoute: typeof StoriesLazyRouteWithChildren
-}
-
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   MapRoute: MapRoute,
   StoriesLazyRoute: StoriesLazyRouteWithChildren,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/map",
-        "/stories"
-      ]
-    },
-    "/": {
-      "filePath": "index.lazy.tsx"
-    },
-    "/map": {
-      "filePath": "map.tsx"
-    },
-    "/stories": {
-      "filePath": "stories.lazy.tsx",
-      "children": [
-        "/stories/$storyId"
-      ]
-    },
-    "/stories/$storyId": {
-      "filePath": "stories/$storyId.lazy.tsx",
-      "parent": "/stories"
-    }
-  }
-}
-ROUTE_MANIFEST_END */

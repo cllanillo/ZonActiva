@@ -10,7 +10,12 @@ export function AddEvent() {
 
   return (
     <>
-      <Fade in={open} mountOnEnter unmountOnExit sx={{ position: 'absolute', zIndex: 10, inset: 0, backdropFilter: 4, bgcolor: 'background.paperGlass' }}>
+      <Fade
+        in={open}
+        mountOnEnter
+        unmountOnExit
+        sx={{ position: 'absolute', zIndex: 10, inset: 0, backdropFilter: 4, bgcolor: 'background.paperGlass', display: 'flex', '&>.MuiCircularProgress-root': { m: 'auto' } }}
+      >
         <span>
           <Suspense fallback={<CircularProgress />}>
             <EventForm />

@@ -22,7 +22,8 @@ export function Header({ expandableRefs }: HeaderProps) {
     return true;
   }, false);
 
-  const { loginWithPopup, logout, isAuthenticated, user } = useAuth0();
+  const { loginWithPopup, logout, isAuthenticated, user, ...x } = useAuth0();
+  console.log('🚀 ~ Header ~ x:', { loginWithPopup, logout, isAuthenticated, user, ...x });
 
   return (
     <header
@@ -69,7 +70,7 @@ export function Header({ expandableRefs }: HeaderProps) {
             },
           })}
         >
-          <Avatar src={user.picture} title={i18n.authLogout} onClick={() => logout()} sx={{}}>
+          <Avatar src={user.picture} title={i18n.authLogout} onClick={() => logout({})} sx={{}}>
             {`${user.given_name?.[0]?.toUpperCase()} ${user.family_name?.[0]?.toUpperCase()}`}
           </Avatar>
           <LogoutIcon />

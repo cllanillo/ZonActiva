@@ -66,6 +66,9 @@ export function LayoutMap() {
           onMoveEnd={(event) => {
             updateMapBounds(event.viewState);
           }}
+          onClick={(event) => {
+            console.log('🚀 ~ LayoutMap ~ event:', event.lngLat);
+          }}
         >
           <Suspense fallback={null}>
             <GeolocateControl position="top-right" />

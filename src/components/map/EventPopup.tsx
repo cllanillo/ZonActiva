@@ -1,8 +1,7 @@
 import { Box, Card, Typography } from '@mui/material';
-import type { EventRowDto } from '~/api/events';
 
 interface EventPopupProps {
-  event: EventRowDto;
+  event: any;
   onClick?: () => void;
 }
 
@@ -11,34 +10,32 @@ export function EventPopup({ event }: EventPopupProps) {
     <Card
       sx={{
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'flex-start',
         maxWidth: '60ch',
         p: 1,
         gap: 1,
         boxShadow: 4,
         borderRadius: 1,
-        bgcolor: 'background.paper',
+        bgcolor: 'background.paperGlass',
+        backdropFilter: 2,
+        '&>h6': {
+          display: 'flex',
+          alignItems: 'center',
+          '&>img': { height: 32, width: 32, aspectRatio: 1, objectFit: 'contain' },
+        },
+        '& img': { maxWidth: 0.5, maxHeight: 150, borderRadius: 1, ml: 1, objectFit: 'contain', float: 'right' },
       }}
     >
-      {/* <img src={event.imageUrl} alt={event.name} sx={{ aspectRatio: 1 / 1, borderRadius: 1, objectFit: 'cover' }} /> */}
+      <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 0.5 }}>
+        {!!event.icon && <img src={event.icon} alt={`icon:${event.name}`} />}
+        {event.name}
+      </Typography>
 
       <Box sx={{ p: 0, flex: 1 }}>
-        <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 0.5 }}>
-          {event.name}
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            // display: '-webkit-box',
-            // WebkitLineClamp: 4,
-            // WebkitBoxOrient: 'vertical',
-            // overflow: 'hidden',
-            // textOverflow: 'ellipsis',
-          }}
-        >
-          {event.description}
-        </Typography>
+        {!!event.image && <img src={event.image} alt={`image:${event.name}`} />}
+
+        <Typography variant="body2">{event.description?.split('\n')[0]}</Typography>
       </Box>
     </Card>
   );

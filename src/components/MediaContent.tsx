@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Box } from '@mui/material';
+import { type SxProps, type Theme } from '@mui/material';
 
 interface MediaContentProps {
   src: string;
@@ -23,10 +23,7 @@ export default function MediaContent({ src, type, isPreview = false, fullScreen 
     }
   };
 
-  if (type === 'image') {
-    return <Box component="img" src={src} alt="media-preview" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
-  }
-
+  if (type === 'image') return <img src={src} alt="media-preview" sx={{ width: '100%', maxHeight: '100%', objectFit: 'contain' }} />;
   // type === "video"
   return (
     <video
@@ -36,7 +33,7 @@ export default function MediaContent({ src, type, isPreview = false, fullScreen 
       loop
       controls={fullScreen}
       playsInline
-      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+      sx={{ width: '100%', maxHeight: '100%', objectFit: 'contain' }}
       autoPlay={fullScreen}
       preload={isPreview ? 'metadata' : 'auto'}
       onMouseEnter={handleMouseEnter}

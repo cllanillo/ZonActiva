@@ -1,11 +1,12 @@
 export const es = {
     //region Actions
+    actionClose: 'Cerrar',
     actionDownload: 'Descargar',
 
     //region Authentication
-    authRegister: 'Registrarse',
     authLogin: 'Iniciar sesión',
     authLogout: 'Cerrar sesión',
+    authRegister: 'Registrarse',
 
     //region Navigation
     navHome: 'Inicio',
