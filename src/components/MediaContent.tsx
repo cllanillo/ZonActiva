@@ -1,22 +1,24 @@
 import { useRef } from 'react';
-import { type SxProps, type Theme } from '@mui/material';
 
 interface MediaContentProps {
   src: string;
   type: 'video' | 'image';
   isPreview?: boolean;
-  fullScreen?: boolean;
+  autoPlay?: boolean;
 }
 
-export default function MediaContent({ src, type, isPreview = false, fullScreen = false }: MediaContentProps) {
+export default function MediaContent({ src, type, isPreview = false, autoPlay = false }: MediaContentProps) {
+  console.log('🚀 ~ MediaContent ~ autoPlay:', autoPlay);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleMouseEnter = () => {
+    if (autoPlay) return;
     if (type === 'video' && isPreview && videoRef.current) {
       videoRef.current.play();
     }
   };
   const handleMouseLeave = () => {
+    if (autoPlay) return;
     if (type === 'video' && isPreview && videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
@@ -31,10 +33,10 @@ export default function MediaContent({ src, type, isPreview = false, fullScreen 
       src={src}
       muted
       loop
-      controls={fullScreen}
+      controls={autoPlay}
       playsInline
       sx={{ width: '100%', maxHeight: '100%', objectFit: 'contain' }}
-      autoPlay={fullScreen}
+      autoPlay={autoPlay}
       preload={isPreview ? 'metadata' : 'auto'}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

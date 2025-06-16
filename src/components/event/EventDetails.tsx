@@ -84,7 +84,7 @@ Ambiente festivo en el municipio, con salidas y llegadas en zonas céntricas com
       <section>
         <header sx={{ display: 'flex' }}>
           <Typography variant="subtitle1" fontWeight="bold" sx={{ flexGrow: 1 }}>
-            {'Publicaciones'}
+            {i18n.eventPosts}
           </Typography>
         </header>
 
