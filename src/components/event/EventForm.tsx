@@ -1,11 +1,14 @@
-import { Typography } from '@mui/material';
-import { Formik } from 'formik';
-import { useMemo } from 'react';
+import { Grid, Typography } from '@mui/material';
+import { Formik, type FormikProps } from 'formik';
+import { useMemo, useRef } from 'react';
 import * as Yup from 'yup';
 import { type EventFormDto, useCreateEvent } from '~/api/events';
 import { FormikDateRange, FormikFile, FormikMapPoint, FormikSubmit, FormikText } from '🪟/field';
 
 export default function EventForm() {
+  const formiRef = useRef({} as FormikProps<EventFormDto>);
+  console.log(`🚀 ~ EventForm.formiRef:`, formiRef);
+
   const yupSchema = useMemo(
     () =>
       Yup.object().shape({
@@ -19,7 +22,18 @@ export default function EventForm() {
   );
   const createEvent = useCreateEvent();
 
-  return <Formik validationSchema={yupSchema} initialValues={{} as EventFormDto} onSubmit={(newEvent) => createEvent.mutateAsync(newEvent)} children={<InnerForm />} />;
+  return (
+    <Formik
+      innerRef={formiRef}
+      validationSchema={yupSchema}
+      initialValues={{} as EventFormDto}
+      onSubmit={(newEvent) => {
+        console.log(`🚀 ~ onSubmit:`, newEvent);
+        createEvent.mutateAsync(newEvent);
+      }}
+      children={<InnerForm />}
+    />
+  );
 }
 
 function InnerForm() {
@@ -32,6 +46,7 @@ function InnerForm() {
         display: 'flex',
         flexDirection: 'column',
         gap: 5,
+        overflow: 'auto',
         '&>div': {
           display: 'flex',
           justifyContent: 'space-between',
@@ -48,10 +63,9 @@ function InnerForm() {
       }}
     >
       {/* Name, 📅, Category */}
-      <div sx={{ mt: '54px', ml: '116px' }}>
-        <div>
-          <Typography variant="subtitle1">Icon</Typography>
-          <FormikFile name="icon" />
+      <div sx={{ mt: '54px', ml: '46px' }}>
+        <div sx={{ flexGrow: '0!important', '&>button': { height: 64, width: 64 } }}>
+          <FormikFile name="icon" sx={{ height: 64, width: 64 }} />
         </div>
         <div>
           <Typography variant="subtitle1">Name</Typography>
@@ -61,34 +75,38 @@ function InnerForm() {
           <Typography variant="subtitle1">Date</Typography>
           <FormikDateRange name="date" slotProps={{ textField: { fullWidth: true } }} />
         </div>
-        {/* <div>
-          <Typography variant="subtitle1">Category</Typography>
-          <FormikText name="category" fullWidth />
-        </div> */}
       </div>
 
       {/* Imagen, Description */}
-      <div>
-        <div>
+      <Grid container spacing={2} sx={{ overflow: { xs: 'unset', md: 'auto' } }}>
+        <Grid size={{ xs: 12, md: 6 }} sx={{ '&>button': { width: '100%', minHeight: 200, maxWidth: 'unset' } }}>
           <Typography variant="subtitle1">Imagen</Typography>
           <FormikFile name="image" />
-        </div>
 
-        <div>
           <Typography variant="subtitle1">Description</Typography>
-          <FormikText name="name" multiline minRows={10} fullWidth />
-        </div>
-      </div>
+          <FormikText
+            name="description"
+            multiline
+            minRows={5}
+            fullWidth
+            sx={{
+              flexGrow: 1,
+              overflow: 'auto',
+              '&>.MuiInputBase-root': { flexGrow: 1, alignItems: 'start', '&>.MuiInputBase-input': { flexGrow: 1 } },
+            }}
+          />
+        </Grid>
 
-      {/* Location, Save */}
-      <div>
-        <div id="point">
-          <Typography variant="subtitle1">Location</Typography>
+        {/* Location, Save */}
+        <Grid size={{ xs: 12, md: 6 }} sx={{ alignItems: 'end', '&>button': {} }}>
+          <Typography variant="subtitle1" sx={{ width: 1 }}>
+            Location
+          </Typography>
           <FormikMapPoint name="point" />
-        </div>
 
-        <FormikSubmit sx={{ mt: 'auto' }} />
-      </div>
+          <FormikSubmit sx={{ mt: 'auto', width: 0.3, position: 'absolute', bottom: 0, right: 0, mr: 2, mb: 2 }} />
+        </Grid>
+      </Grid>
     </form>
   );
 }

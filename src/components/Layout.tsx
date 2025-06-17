@@ -63,9 +63,9 @@ export function Layout({ children }: PropsWithChildren) {
           }}
         >
           <span sx={{ display: 'flex', flexDirection: 'column', gap: 'inherit' }}>
-            <HeaderNavLink to="/" icon={PlaceIcon} label={i18n.map} />
+            <HeaderNavLink to="/" icon={PlaceIcon} label={i18n.navMap} />
 
-            <HeaderNavLink to="/stories" icon={MovieIcon} label={i18n.stories} />
+            <HeaderNavLink to="/stories" icon={MovieIcon} label={i18n.navStories} />
           </span>
         </nav>
 

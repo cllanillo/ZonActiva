@@ -4,6 +4,7 @@ export const en = {
     actionDownload: 'Download',
     actionLoading: 'Loading {0}...',
     actionNoItems: 'No {0} yet',
+    actionSaveItem: 'Saved {0}',
 
     //region Authentication
     authLogin: 'Login',
@@ -11,6 +12,7 @@ export const en = {
     authRegister: 'Resgiter',
 
     //region event
+    event: 'Event',
     eventPosts: 'Posts',
 
     //region Navigation

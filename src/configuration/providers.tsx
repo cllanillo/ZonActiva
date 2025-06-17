@@ -5,13 +5,15 @@ import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
 import { LicenseInfo } from '@mui/x-license';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { useMemo, type PropsWithChildren } from 'react';
+import { useRef, type PropsWithChildren } from 'react';
 import { theme } from '⚙️';
 
 LicenseInfo.setLicenseKey('954aebe364589d218a24faff1674daccTz05MDkxOCxFPTE3NDc4Mzg1OTMwMDAsUz1wcm8sTE09c3Vic2NyaXB0aW9uLEtWPTI=');
 
 export function Providers(props: PropsWithChildren) {
-  const queryClient = useMemo(() => new QueryClient({ defaultOptions: { queries: { refetchOnMount: false, refetchOnWindowFocus: false, retry: 1 } } }), []);
+  console.log(`🚀 ~ Providers.origin:`, { gT: globalThis?.origin, W: window?.location?.origin });
+  const queryClient = useRef(new QueryClient({ defaultOptions: { queries: { refetchOnMount: false, refetchOnWindowFocus: false, retry: 1 } } })).current;
+
   return (
     <QueryClientProvider client={queryClient}>
       <Auth0Provider domain="dev-iktt0m22awa32g7s.eu.auth0.com" clientId="mNnh1thZuAG8ENbzdUw02MJ8lWSeZ6WS" authorizationParams={{ redirect_uri: globalThis?.origin }}>

@@ -30,7 +30,7 @@ export default function EventDetail({ event, onClose = () => null }: EventDetail
     >
       <header sx={{ py: 2, pr: 6, mb: -3, display: 'flex', position: 'sticky', backdropFilter: 10, top: 0, zIndex: 100 }}>
         <Typography variant="h3" fontWeight="bold" sx={{ flexGrow: 1 }}>
-          {!!event.icon && <img src={event.icon} alt={`icon:${event.name}`} />}
+          {!!event.icon && <img src={event.icon} alt={`icon:${event.name}`} sx={{ height: 64, width: 64, ml: -2, mr: 2, objectFit: 'contain' }} />}
           {event.name}
         </Typography>
 

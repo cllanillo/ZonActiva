@@ -1,7 +1,7 @@
 import { GeolocateControl, Map, NavigationControl, ScaleControl } from '@vis.gl/react-mapbox';
 import { Suspense } from 'react';
 import { EventRowDto, useGetNearbyEvents } from '~/api/events';
-import { useStoreMapBounds } from '~/api/map';
+import { STYLE_MAPBOX, TOKEN_MAPBOX, useStoreMapBounds } from '~/api/map';
 import CustomMarker from './map/CustomMarker';
 
 export function LayoutMap() {
@@ -60,8 +60,8 @@ export function LayoutMap() {
       >
         <Map
           initialViewState={initialMapBounds}
-          mapStyle="mapbox://styles/llanillo-jr/cmad5xjsw00pb01s437cgexef"
-          mapboxAccessToken={import.meta.env.VITE_TOKEN_MAPBOX}
+          mapStyle={STYLE_MAPBOX}
+          mapboxAccessToken={TOKEN_MAPBOX}
           language="es"
           onMoveEnd={(event) => {
             updateMapBounds(event.viewState);

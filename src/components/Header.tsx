@@ -22,7 +22,7 @@ export function Header({ expandableRefs }: HeaderProps) {
     return true;
   }, false);
 
-  const { loginWithPopup, logout, isAuthenticated, user, ...x } = useAuth0();
+  const { loginWithPopup, loginWithRedirect, logout, isAuthenticated, user, ...x } = useAuth0();
   console.log('🚀 ~ Header ~ x:', { loginWithPopup, logout, isAuthenticated, user, ...x });
 
   return (
@@ -70,13 +70,13 @@ export function Header({ expandableRefs }: HeaderProps) {
             },
           })}
         >
-          <Avatar src={user.picture} title={i18n.authLogout} onClick={() => logout({})} sx={{}}>
+          <Avatar src={user.picture} title={i18n.authLogout} onClick={() => logout({ logoutParams: { returnTo: globalThis?.origin } })} sx={{}}>
             {`${user.given_name?.[0]?.toUpperCase()} ${user.family_name?.[0]?.toUpperCase()}`}
           </Avatar>
           <LogoutIcon />
         </span>
       ) : (
-        <Button title={`${i18n.authLogin}/${i18n.authRegister}`} onClick={() => loginWithPopup()} sx={{ px: 1, gap: 1, '&>span': { display: { xs: 'none', md: 'initial' } } }}>
+        <Button title={`${i18n.authLogin}/${i18n.authRegister}`} onClick={() => loginWithRedirect()} sx={{ px: 1, gap: 1, '&>span': { display: { xs: 'none', md: 'initial' } } }}>
           <LoginIcon />
           <span>
             {i18n.authLogin}/{i18n.authRegister}

@@ -74,7 +74,7 @@ export default function StoryGrid({ eventId }: StoryGridProps) {
 
                 <StoryGridItemTitle thread={thread} sx={{ boxShadow: 8, borderRadius: 2, mb: 2 }} />
 
-                <CommentList threadId={thread?.id} />
+                <CommentList threadId={thread?.item_id} />
               </Grid>
             </Grid>
           )}

@@ -4,7 +4,7 @@ import { users } from "./users";
 
 export interface ThreadCommentDto {
     id: string;
-    threadId: ThreadDto['id'];
+    threadId: ThreadDto['item_id'];
     userId: string;
     content: string;
 }
@@ -58,7 +58,7 @@ const threadsComments: ThreadCommentDto[] = [{
     "content": "Eso suena increíble, pero ¿no sería un desafío logístico? La infraestructura en esos lugares podría ser un problema."
 }]
 
-export function useGetThreadComments(threadId: ThreadDto['id']) {
+export function useGetThreadComments(threadId: ThreadDto['item_id']) {
     return useQuery({
         queryKey: ['useGetComments', threadId],
         queryFn: () => threadsComments.filter(tC => tC.threadId === threadId).map(tC => ({

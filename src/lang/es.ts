@@ -4,6 +4,7 @@ export const es = {
     actionDownload: 'Descargar',
     actionLoading: 'Cargado {0}...',
     actionNoItems: 'No hay {0} todavía',
+    actionSaveItem: '{0} creado',
 
     //region Authentication
     authLogin: 'Iniciar sesión',
@@ -11,6 +12,7 @@ export const es = {
     authRegister: 'Registrarse',
 
     //region event
+    event: 'Evento',
     eventPosts: 'Publicaciones',
 
     //region Navigation

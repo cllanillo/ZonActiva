@@ -1,8 +1,9 @@
 import PlaceIcon from '@mui/icons-material/Place';
 import { Box, CircularProgress, Fade, Tooltip } from '@mui/material';
 import { Marker } from '@vis.gl/react-mapbox';
-import { lazy, Suspense, useReducer } from 'react';
+import { lazy, LazyExoticComponent, Suspense, useMemo, useReducer } from 'react';
 import { EventPopup } from './EventPopup';
+import { EventType } from '~/api/events';
 
 const EventDetail = lazy(() => import('🪟/event/EventDetails'));
 
@@ -12,25 +13,21 @@ interface CustomMarkerProps {
   onHover?: () => void;
 }
 
-// const LazyIcons: Record<EventType, LazyExoticComponent<typeof PlaceIcon>> = {
-//   FOOTBALL: lazy(() => import('@mui/icons-material/SportsSoccer')),
-//   RALLY: lazy(() => import('@mui/icons-material/DirectionsCar')),
-//   CONCERT: lazy(() => import('@mui/icons-material/MusicNote')),
-// };
+const LazyIcons: Record<EventType, LazyExoticComponent<typeof PlaceIcon>> = {
+  FOOTBALL: lazy(() => import('@mui/icons-material/SportsSoccer')),
+  RALLY: lazy(() => import('@mui/icons-material/DirectionsCar')),
+  CONCERT: lazy(() => import('@mui/icons-material/MusicNote')),
+};
 
 export default function CustomMarker({ event }: CustomMarkerProps) {
   console.log('🚀 ~ CustomMarker ~ event:', event);
   const [open, updateOpen] = useReducer((ps) => !ps, false);
-  //   const EventIcon = useMemo(() => LazyIcons[event.type], [event]);
+  const EventIcon = useMemo(() => (event.icon ? () => <img src={event.icon} /> : LazyIcons[(event.type as EventType) ?? 'CONCERT']), [event]);
 
+  if (!event.lat || !event.lng) return null;
   return (
     <>
-      <Fade
-        in={open}
-        mountOnEnter
-        unmountOnExit
-        sx={{ position: 'absolute', zIndex: 1000, inset: 0, bgcolor: 'background.paper', display: 'flex', '&>.MuiCircularProgress-root': { m: 'auto' } }}
-      >
+      <Fade in={open} mountOnEnter unmountOnExit sx={{ position: 'absolute', zIndex: 1000, inset: 0, bgcolor: 'background.paper', display: 'flex', '&>.MuiCircularProgress-root': { m: 'auto' } }}>
         <span>
           <Suspense fallback={<CircularProgress />}>
             <EventDetail event={event} onClose={updateOpen} />
@@ -68,8 +65,7 @@ export default function CustomMarker({ event }: CustomMarkerProps) {
             <PlaceIcon />
 
             <Suspense fallback={null}>
-              {/* <EventIcon /> */}
-              {/* <img src="https://i0.wp.com/boombasticfestival.com/wp-content/uploads/2025/03/isotipo_boombastic_general_2.png?resize=150%2C150&ssl=" /> */}
+              <EventIcon />
             </Suspense>
           </Box>
         </Tooltip>
