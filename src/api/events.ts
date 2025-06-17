@@ -3,7 +3,6 @@ import type { Dayjs } from 'dayjs';
 import type { LngLat } from 'mapbox-gl';
 import type { Database } from './database.types';
 import supabase from './supabase';
-import { useSnackbar } from 'notistack';
 import { getB64 } from './getB64';
 import { i18n } from '~/lang';
 
@@ -32,7 +31,7 @@ useGetNearbyEvents.queryKey = 'nearby_events';
 
 export function useCreateEvent() {
   const queryClient = useQueryClient();
-  const { enqueueSnackbar } = useSnackbar();
+  // const { enqueueSnackbar } = useSnackbar();
   return useMutation({
     mutationFn: async ({ date, point, image, icon, name, description }: EventFormDto) => {
       const [start, end] = date;
@@ -61,7 +60,7 @@ export function useCreateEvent() {
     onSuccess: (...x) => {
       console.log('🚀 ~ useCreateEvent.onSuccess:', x);
       queryClient.resetQueries({ queryKey: [useGetNearbyEvents.queryKey], exact: false });
-      enqueueSnackbar(i18n.formatString(i18n.actionSaveItem, i18n.event), { variant: 'success' });
+      // enqueueSnackbar(i18n.formatString(i18n.actionSaveItem, i18n.event), { variant: 'success' });
     },
   });
 }
